@@ -1,0 +1,25 @@
+# Node modules (frontend + backend)
+**/node_modules/
+
+# dotenv secrets
+backend Shopping/.env
+*.env
+**/.env
+
+# Log files
+**/*.log
+
+# Build or dist folders (optional)
+**/dist/
+**/build/
+
+# MacOS and Windows junk
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Cache
+**/.cache/
