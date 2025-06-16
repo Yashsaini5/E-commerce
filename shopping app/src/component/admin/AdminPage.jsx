@@ -1,12 +1,17 @@
-import React, { useContext } from "react";
-import { NavLink, Route, Routes } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { NavLink, Route, Routes, useNavigate } from "react-router-dom";
 import { DataContext } from "../../context/DataProvider";
 import AddItem from "./pages/AddItem";
 import ItemList from "./pages/ItemList";
 import Order from "./pages/Order";
 import AddCategory from "./pages/AddCategory";
 import EditProduct from "./pages/EditProduct";
+
+const sidebarLinks = [
+  { name: "Add Item", path: "" },
+  { name: "Item List", path: "list" },
+  { name: "Order", path: "order" },
+];
 
 const AdminPage = () => {
   const { user } = useContext(DataContext)
@@ -35,27 +40,17 @@ const AdminPage = () => {
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className="fixed top-16 left-0 h-[calc(100%-4rem)] w-1/5 bg-stone-800 flex flex-col items-end z-40">
+      <div className="fixed top-16 left-0 h-[calc(100%-4rem)] w-1/5 bg-stone-800 flex flex-col items-end z-40">
+        {sidebarLinks.map(({ name, path }) => (
           <NavLink
+            key={name}
+            to={path}
             className="w-2/3 text-white border-2 border-amber-900 bg-amber-700 py-2 pr-2 font-semibold text-lg my-5 text-end rounded-l-lg"
-            to=""
           >
-            <div>Add Item</div>
+            <div>{name}</div>
           </NavLink>
-          <NavLink
-            className="w-2/3 text-white border-2 border-amber-900 bg-amber-700 py-2 pr-2 font-semibold text-lg my-5 text-end rounded-l-lg"
-            to="list"
-          >
-            <div>Item List</div>
-          </NavLink>
-          <NavLink
-            className="w-2/3 text-white border-2 border-amber-900 bg-amber-700 py-2 pr-2 font-semibold text-lg my-5 text-end rounded-l-lg"
-            to="order"
-          >
-            <div>Order</div>
-          </NavLink>
-        </div>
+        ))}
+      </div>
 
         {/* Main Content */}
         <div className="ml-[20%] mt-16 h-[calc(100%-4rem)] overflow-y-auto bg-slate-100 p-8">
