@@ -10,8 +10,7 @@ import LaptopCategory from '../homeComponents/LaptopCategory'
 import PriceRangeShowcase from '../homeComponents/PriceRangeShowcase'
 const Home = () => {
   return (
-    <div>
-      
+    <div> 
       <HeroBanner/>
       <HomeCategories/>
       <AdBanner1/>
@@ -22,7 +21,6 @@ const Home = () => {
       <LaptopCategory/>
       <PriceRangeShowcase category="Clothing" ranges={[500, 1000, 2000]} />
       <PriceRangeShowcase category="Mobiles" ranges={[10000, 30000, 500000]} />
-
     </div>
   )
 }

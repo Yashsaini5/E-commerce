@@ -54,7 +54,7 @@ const Newcollections = () => {
         <div className="absolute w-72 h-72 bg-[#c3fbd8] rounded-full filter blur-2xl opacity-20 bottom-16 right-12"></div>
       </div>
 
-      <div className="w-[100vw] h-[16vh] relative z-10">
+      <div className="w-full h-[16vh] relative z-10">
         <h1
           ref={ref}
           className="h-[10vh] w-fit text-2xl md:text-5xl font-bold pt-4 z-10 text-center underline underline-offset-[15px] decoration-4 absolute right-20"

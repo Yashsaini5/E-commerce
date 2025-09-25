@@ -2,8 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { DataContext } from "../../context/DataProvider";
 
-////////////////////////////////////////////////////////////////////////  pagination  ///////////////////////////////////////////////////////////////////////////////
-
 const ProductList = () => {
   const { data, addToWishlist, removeFromWishlist, wishlist, fetchWishlist } =
     useContext(DataContext);
@@ -21,10 +19,10 @@ const ProductList = () => {
   });
   const [sortBy, setSortBy] = useState("relevance");
   const [showAllSubcategories, setShowAllSubcategories] = useState(false);
-  const subcategoryLimit = 5; // Initial number of subcategories to show
+  const subcategoryLimit = 5;
   const [showAllBrands, setShowAllBrands] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 28; // Change as needed
+  const itemsPerPage = 28;
 
   const uniqueBrand = [...new Set(searchedProducts?.map((p) => p.brand))];
   const uniqueSizes = [
@@ -177,149 +175,166 @@ const ProductList = () => {
         </div>
         <div className="belowNavbar flex h-full flex-col lg:flex-row w-full px-4 gap-2">
           <div className="sidebar w-full sm:w-1/3 lg:w-1/6 bg-white flex flex-col mr-0 lg:mr-2 text-slate-600 shadow-xl rounded-md mb-4 lg:mb-0 ">
-  <div className="flex justify-between items-center h-14 px-4 py-3 border-b border-gray-400">
-    <p className="text-xl font-semibold text-black">Filters</p>
-    <button
-      onClick={() => {
-        setFilters({
-          brand: [],
-          size: [],
-          subcategory: [],
-          minPrice: "",
-          maxPrice: "",
-        });
-      }}
-      className="text-sm font-medium text-pink-500"
-    >
-      CLEAR ALL
-    </button>
-  </div>
+            <div className="flex justify-between items-center h-14 px-4 py-3 border-b border-gray-400">
+              <p className="text-xl font-semibold text-black">Filters</p>
+              <button
+                onClick={() => {
+                  setFilters({
+                    brand: [],
+                    size: [],
+                    subcategory: [],
+                    minPrice: "",
+                    maxPrice: "",
+                  });
+                }}
+                className="text-sm font-medium text-pink-500"
+              >
+                CLEAR ALL
+              </button>
+            </div>
 
-  <div className="p-4">
-    <p className="text-black font-medium text-base mb-2">BRAND</p>
-    {(showAllBrands ? uniqueBrand : uniqueBrand.slice(0, 5)).map((brand) => (
-      <div key={brand} className="flex flex-col">
-        <div className="flex pl-2 items-center">
-          <input
-            type="checkbox"
-            checked={filters.brand.includes(brand)}
-            id={brand}
-            className="w-4 h-4 accent-pink-500 text-sm bg-gray-100 border-gray-300 rounded focus:ring-pink-500"
-            onChange={() => handleFilterChange("brand", brand)}
-          />
-          <label htmlFor={brand} className="pl-2">
-            {brand.toUpperCase()}
-          </label>
-        </div>
-      </div>
-    ))}
-    {uniqueBrand.length > 5 && (
-      <button
-        onClick={() => setShowAllBrands(!showAllBrands)}
-        className="text-sm text-pink-500 font-medium ml-2 mt-2"
-      >
-        {showAllBrands ? (
-          <>
-            Show Less <span>&#9650;</span>
-          </>
-        ) : (
-          <>
-            Show More <span>&#9660;</span>
-          </>
-        )}
-      </button>
-    )}
-  </div>
+            <div className="p-4">
+              <p className="text-black font-medium text-base mb-2">BRAND</p>
+              {(showAllBrands ? uniqueBrand : uniqueBrand.slice(0, 5)).map(
+                (brand) => (
+                  <div key={brand} className="flex flex-col">
+                    <div className="flex pl-2 items-center">
+                      <input
+                        type="checkbox"
+                        checked={filters.brand.includes(brand)}
+                        id={brand}
+                        className="w-4 h-4 accent-pink-500 text-sm bg-gray-100 border-gray-300 rounded focus:ring-pink-500"
+                        onChange={() => handleFilterChange("brand", brand)}
+                      />
+                      <label htmlFor={brand} className="pl-2">
+                        {brand.toUpperCase()}
+                      </label>
+                    </div>
+                  </div>
+                )
+              )}
+              {uniqueBrand.length > 5 && (
+                <button
+                  onClick={() => setShowAllBrands(!showAllBrands)}
+                  className="text-sm text-pink-500 font-medium ml-2 mt-2"
+                >
+                  {showAllBrands ? (
+                    <>
+                      Show Less <span>&#9650;</span>
+                    </>
+                  ) : (
+                    <>
+                      Show More <span>&#9660;</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
 
-  <div className="p-4">
-    <p className="text-black font-medium text-base mb-2">SUB-CATEGORY</p>
-    {(showAllSubcategories ? uniqueSubcategories : uniqueSubcategories.slice(0, subcategoryLimit)).map((subcategory) => (
-      <div key={subcategory} className="flex flex-col">
-        <div className="flex pl-2 items-center">
-          <input
-            type="checkbox"
-            checked={filters.subcategory.includes(subcategory)}
-            id={subcategory}
-            className="w-4 h-4 accent-pink-500 text-sm bg-gray-100 border-gray-300 rounded focus:ring-pink-500"
-            onChange={() => handleFilterChange("subcategory", subcategory)}
-          />
-          <label htmlFor={subcategory} className="pl-2">
-            {subcategory.toUpperCase()}
-          </label>
-        </div>
-      </div>
-    ))}
-    {uniqueSubcategories.length > subcategoryLimit && (
-      <button
-        onClick={() => setShowAllSubcategories(!showAllSubcategories)}
-        className="text-sm font-medium text-pink-500 mt-2 ml-2"
-      >
-        {showAllSubcategories ? (
-          <>
-            Show Less <span>&#9650;</span>
-          </>
-        ) : (
-          <>
-            Show More <span>&#9660;</span>
-          </>
-        )}
-      </button>
-    )}
-  </div>
+            <div className="p-4">
+              <p className="text-black font-medium text-base mb-2">
+                SUB-CATEGORY
+              </p>
+              {(showAllSubcategories
+                ? uniqueSubcategories
+                : uniqueSubcategories.slice(0, subcategoryLimit)
+              ).map((subcategory) => (
+                <div key={subcategory} className="flex flex-col">
+                  <div className="flex pl-2 items-center">
+                    <input
+                      type="checkbox"
+                      checked={filters.subcategory.includes(subcategory)}
+                      id={subcategory}
+                      className="w-4 h-4 accent-pink-500 text-sm bg-gray-100 border-gray-300 rounded focus:ring-pink-500"
+                      onChange={() =>
+                        handleFilterChange("subcategory", subcategory)
+                      }
+                    />
+                    <label htmlFor={subcategory} className="pl-2">
+                      {subcategory.toUpperCase()}
+                    </label>
+                  </div>
+                </div>
+              ))}
+              {uniqueSubcategories.length > subcategoryLimit && (
+                <button
+                  onClick={() => setShowAllSubcategories(!showAllSubcategories)}
+                  className="text-sm font-medium text-pink-500 mt-2 ml-2"
+                >
+                  {showAllSubcategories ? (
+                    <>
+                      Show Less <span>&#9650;</span>
+                    </>
+                  ) : (
+                    <>
+                      Show More <span>&#9660;</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
 
-  <div className="p-4">
-    <p className="text-black font-medium text-base mb-2">SIZES</p>
-    {uniqueSizes?.map((size) => (
-      <div key={size} className="flex flex-col">
-        <div className="flex pl-2 items-center">
-          <input
-            type="checkbox"
-            checked={filters.size.includes(size)}
-            id={size}
-            className="w-4 h-4 accent-pink-500 text-sm bg-gray-100 border-gray-300 rounded focus:ring-pink-500"
-            onChange={() => handleFilterChange("size", size)}
-          />
-          <label htmlFor={size} className="pl-2">
-            {size.toUpperCase()}
-          </label>
-        </div>
-      </div>
-    ))}
-  </div>
+            <div className="p-4">
+              <p className="text-black font-medium text-base mb-2">SIZES</p>
+              {uniqueSizes?.map((size) => (
+                <div key={size} className="flex flex-col">
+                  <div className="flex pl-2 items-center">
+                    <input
+                      type="checkbox"
+                      checked={filters.size.includes(size)}
+                      id={size}
+                      className="w-4 h-4 accent-pink-500 text-sm bg-gray-100 border-gray-300 rounded focus:ring-pink-500"
+                      onChange={() => handleFilterChange("size", size)}
+                    />
+                    <label htmlFor={size} className="pl-2">
+                      {size.toUpperCase()}
+                    </label>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-  <div className="p-4">
-    <p className="text-black font-medium text-base mb-2">PRICE RANGE</p>
-    <input
-      type="range"
-      min={minPrice}
-      max={maxPrice}
-      value={filters.maxPrice || maxPrice}
-      onChange={(e) => setFilters({ ...filters, maxPrice: Number(e.target.value) })}
-      className="w-full accent-pink-500"
-    />
-    <div className="flex items-center gap-2 mt-2">
-      <input
-        type="number"
-        min={minPrice}
-        max={maxPrice}
-        placeholder={`Min (${minPrice})`}
-        value={filters.minPrice}
-        onChange={(e) => setFilters({ ...filters, minPrice: Number(e.target.value) })}
-        className="w-24 p-1 border border-gray-300 rounded"
-      />
-      <span> - </span>
-      <input
-        type="number"
-        min={minPrice}
-        max={maxPrice}
-        placeholder={`Max (${maxPrice})`}
-        value={filters.maxPrice}
-        onChange={(e) => setFilters({ ...filters, maxPrice: Number(e.target.value) })}
-        className="w-24 p-1 border border-gray-300 rounded"
-      />
-    </div>
-  </div>
-</div>
+            <div className="p-4">
+              <p className="text-black font-medium text-base mb-2">
+                PRICE RANGE
+              </p>
+              <input
+                type="range"
+                min={minPrice}
+                max={maxPrice}
+                value={filters.maxPrice || maxPrice}
+                onChange={(e) =>
+                  setFilters({ ...filters, maxPrice: Number(e.target.value) })
+                }
+                className="w-full accent-pink-500"
+              />
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="number"
+                  min={minPrice}
+                  max={maxPrice}
+                  placeholder={`Min (${minPrice})`}
+                  value={filters.minPrice}
+                  onChange={(e) =>
+                    setFilters({ ...filters, minPrice: Number(e.target.value) })
+                  }
+                  className="w-24 p-1 border border-gray-300 rounded"
+                />
+                <span> - </span>
+                <input
+                  type="number"
+                  min={minPrice}
+                  max={maxPrice}
+                  placeholder={`Max (${maxPrice})`}
+                  value={filters.maxPrice}
+                  onChange={(e) =>
+                    setFilters({ ...filters, maxPrice: Number(e.target.value) })
+                  }
+                  className="w-24 p-1 border border-gray-300 rounded"
+                />
+              </div>
+            </div>
+          </div>
 
           <div className="main w-5/6 bg-white flex flex-col shadow-xl">
             <div className="flex justify-between items-center h-14 px-3 border-b border-gray-400">

@@ -1,0 +1,44 @@
+Full-Stack E-Commerce Application (MERN Stack)
+A fully functional e-commerce web application built using the MERN stack with real-world features like product management, cart, wishlist, orders, and payment integration.
+
+🔹 Features:
+
+User authentication & authorization with JWT.
+
+Product catalog with categories, subcategories, and variant-based options (size, color, price).
+
+Advanced filters (brand, size, price range, specifications).
+
+Cart & wishlist management linked to user accounts.
+
+Address management for multiple delivery addresses.
+
+Order placement system with Stripe and Razorpay payment gateways.
+
+Admin panel for product management (add/edit products, manage variants, stock, and pricing).
+
+Pagination & expandable filters for smooth browsing.
+
+🛠 Tech Stack:
+
+Frontend: React, React Router, Context API (for state management), Tailwind CSS.
+
+Backend: Node.js, Express.js.
+
+Database: MongoDB (Mongoose).
+
+Payments: Stripe, Razorpay.
+
+Version Control & Deployment: Git/GitHub, Render/Netlify.
+
+📌 Role & Contribution:
+
+Designed and developed the application end-to-end.
+
+Implemented backend REST APIs, database schemas, and authentication flow.
+
+Integrated payment gateways (Stripe & Razorpay) for secure transactions.
+
+Built responsive UI with React and Tailwind CSS.
+
+Optimized filters, pagination, and state management for smooth UX.

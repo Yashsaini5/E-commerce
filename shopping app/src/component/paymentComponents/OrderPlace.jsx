@@ -25,9 +25,6 @@ const OrderPlace = () => {
     const newButtonState = !selectedAddressButton;
     setSelectedAddressButton(newButtonState)
     newButtonState ? setSelectedAddress(user.addresses[selectedAddressIndex]) : setSelectedAddress(null)
-    
-    // Proceed with this address
-  // console.log("Delivering to:", selectedAddress);
   };
   
 
@@ -35,7 +32,6 @@ const OrderPlace = () => {
     setPaymentData( e.target.value );
   };
 
-  console.log(cart)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,7 +51,7 @@ const OrderPlace = () => {
     }
 
     const orderProducts = {
-      products: cart.map((item) => ({
+      products: cart.map((item) => ({ //as cart.map return array and array of object could be the value of the key
         productId: item.product._id,
         quantity: item.quantity,
         size: item.variant.size,

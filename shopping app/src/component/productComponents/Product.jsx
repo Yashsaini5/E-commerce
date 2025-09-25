@@ -63,12 +63,10 @@ const Product = () => {
   } = useContext(DataContext);
   const navigate = useNavigate();
 
-  // ✅ Always declare hooks at the top
   const [mainImg, setMainImg] = useState(null);
   const [isLiked, setIsLiked] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
 
-  // ✅ Wait for data to be ready
   useEffect(() => {
     if (data?.length > 0) {
       const product = data.find((item) => item._id === id);
@@ -116,15 +114,11 @@ const Product = () => {
     }
     await fetchWishlist();
   };
-
-  // Continue with render return here
-
     
   return (
     <div>
       <div className="h-16"></div>
       <div className="min-h-screen w-full bg-stone-300 flex justify-center">
-        {/* {product.map((product)=>( */}
         <div className="w-[92vw] h-fit mt-10 flex flex-wrap">
           <div className="flex w-[40vw] h-[85%] sticky top-28 pb-10">
             <div className="h-[80vh] w-[20%] bg-white flex flex-col justify-between">
@@ -241,8 +235,6 @@ const Product = () => {
           </div>
           
         </div>
-        
-        {/* ))} */}
       </div>
       <div className="h-min-h-screen w-full bg-stone-400">
         <div className=" mx-8">

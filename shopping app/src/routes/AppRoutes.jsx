@@ -35,7 +35,7 @@ const AppRoutes = () => (
       <Route path="wishlist" element={<Wishlist />} />
       <Route path="cart" element={<Cart />} />
       <Route path="orderPlace" element={<OrderPlace />} />
-      <Route path="login" element={<LoginPage />} />
+      <Route path="login" element={<LoginPage/>} />
       <Route path="myProfile/*" element={<MyProfile />} />
       <Route path="orders" element={<Orders />} />
       <Route path="verify" element={<Verify />} />

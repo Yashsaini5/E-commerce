@@ -17,10 +17,10 @@ const PriceRangeShowcase = ({ category, ranges = [] }) => {
                 left: "0%",
                 duration: 2,
                 scrollTrigger: {
-                  trigger: ref.current, // Element to trigger the animation
-                  start: "-600% top", // Start animation when top of element is 80% from the top of the viewport
-                  end: "-380% top", // End animation when top of element is 30% from the top
-                  scrub: 1, // Smooth scrubbing, takes 1 second to "catch up" to the scrollbar
+                  trigger: ref.current, 
+                  start: "-600% top",
+                  end: "-380% top", 
+                  scrub: 1, 
                   // markers:true
                 },
               });
@@ -59,8 +59,8 @@ const PriceRangeShowcase = ({ category, ranges = [] }) => {
 
   return (
     <div className="py-8 px-4 bg-gray-100">
-       <div className="w-[100vw] h-[16vh] relative z-10">
-      <h2 ref={ref} className="mb-8 h-[10vh] w-fit text-2xl md:text-4xl font-bold pt-4 z-10 text-center underline underline-offset-[15px] decoration-4 absolute right-16">{category} by Price</h2></div>
+       <div className="w-full h-[16vh] relative z-10">
+      <h2 ref={ref} className="mb-8 h-[10vh] w-fit text-2xl md:text-4xl font-bold pt-4 z-10 text-center underline underline-offset-[15px] decoration-4 absolute right-20">{category} by Price</h2></div>
       {ranges.slice(0, 10).map((price) => (
         <div key={price} className="mb-10">
           <h3 className="text-2xl font-semibold mb-4 text-gray-700">

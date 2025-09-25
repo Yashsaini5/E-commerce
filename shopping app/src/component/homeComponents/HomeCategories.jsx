@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
 import fashion from "../../assets/images/fashion.jpeg";
 import smartphones from "../../assets/images/smartphones.jpg";
@@ -13,15 +12,12 @@ const HomeCategories = () => {
 
   useEffect(() => {
       gsap.to(ref.current, {
-        opacity: 1,
         left: "3%",
-        duration: 2,
         scrollTrigger: {
-          trigger: ref.current, // Element to trigger the animation
-          start: "-600% top", // Start animation when top of element is 80% from the top of the viewport
-          end: "-380% top", // End animation when top of element is 30% from the top
-          scrub: 1, // Smooth scrubbing, takes 1 second to "catch up" to the scrollbar
-          // markers:true
+          trigger: ref.current,
+          start: "-600% top",
+          end: "-380% top", 
+          scrub: 1, 
         },
       });
     }, []);
@@ -45,8 +41,7 @@ const HomeCategories = () => {
     <div className="absolute w-72 h-72 bg-[#c3fbd8] rounded-full filter blur-2xl opacity-20 bottom-16 right-12"></div>
   </div>
 
-      {/* Heading */}
-      <div className="w-[100vw] h-[16vh] relative z-10">
+      <div className="w-full h-[16vh] relative z-10">
         <h1 ref={ref}
           className="h-[10vh] w-fit text-2xl md:text-5xl font-bold pt-4 z-10 text-center underline underline-offset-[15px] decoration-4 absolute right-20"
         >
@@ -60,7 +55,7 @@ const HomeCategories = () => {
           <div
             key={index}
             onClick={() => handleCategoryClick(Category.name)}
-            className="h-[250px] w-[300px] cursor-pointer relative overflow-hidden rounded-2xl shadow-2xl bg-white bg-opacity-30 backdrop-blur-lg transition-transform duration-300 hover:scale-105"
+            className="h-[250px] w-[300px] cursor-pointer relative overflow-hidden rounded-2xl shadow-2xl bg-white bg-opacity-30 transition-transform duration-300 hover:scale-105"
           >
             <img
               className="h-full w-full object-cover object-bottom"

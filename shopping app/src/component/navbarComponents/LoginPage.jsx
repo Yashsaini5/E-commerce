@@ -105,7 +105,7 @@ const LoginPage = () => {
 
   const [UserVal, setUserVal] = useState("user");
   function handlefunction() {
-    UserVal === "user" ? "" : UserVal;
+    UserVal === "" ? "user" : UserVal;
   }
 
   const [createFormData, setCreateFormData] = useState({
@@ -132,8 +132,12 @@ const LoginPage = () => {
   const handleSubmitCreate = async (e) => {
     e.preventDefault();
 
-    if (!createFormData.username || !createFormData.email || !createFormData.password) {
-      return setErrorMessage({errFields:"please fill all fields"});
+    if (
+      !createFormData.username ||
+      !createFormData.email ||
+      !createFormData.password
+    ) {
+      return setErrorMessage({ errFields: "please fill all fields" });
     }
 
     try {
@@ -153,11 +157,11 @@ const LoginPage = () => {
       if (!response.ok) {
         setErrorMessage({
           ...errorMessage,
-           errUsername:(result.errusername),
-           errEmail:(result.erremail)
-          });
-      } else{
-        window.location.href = "/"; 
+          errUsername: result.errusername,
+          errEmail: result.erremail,
+        });
+      } else {
+        window.location.href = "/";
       }
     } catch (error) {
       console.log("error", error);
@@ -168,7 +172,6 @@ const LoginPage = () => {
       email: "",
       password: "",
     });
-
   };
 
   const [loginFormData, setLoginFormData] = useState({
@@ -185,35 +188,31 @@ const LoginPage = () => {
       errLoginFields: "",
       errLogin: "",
     });
-    console.log(loginFormData)
+    console.log(loginFormData);
   };
   const handleSubmitLogin = async (e) => {
     e.preventDefault();
 
     if (!loginFormData.loginId || !loginFormData.password) {
-      return setErrorMessage1({errLoginFields:"please fill all fields"});
+      return setErrorMessage1({ errLoginFields: "please fill all fields" });
     }
 
     try {
       //response is a object that contains http response, including status, header, and data returned by server
-      const response = await fetch(
-        "http://localhost:5000/api/user/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginFormData),
-          credentials: "include",
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginFormData),
+        credentials: "include",
+      });
       const result = await response.json();
       console.log("success", result);
       if (!response.ok) {
-        setErrorMessage1({errLogin:(result.errLogin)});
-      }
-      else{
-        window.location.href = "/"; 
+        setErrorMessage1({ errLogin: result.errLogin });
+      } else {
+        window.location.href = "/";
       }
     } catch (error) {
       console.log("error", error);
@@ -222,9 +221,7 @@ const LoginPage = () => {
       loginId: "",
       password: "",
     });
-
   };
-
 
   return (
     <>
@@ -240,16 +237,16 @@ const LoginPage = () => {
           >
             <div className="text-center text-4xl font-semibold">Sign In</div>
             <div className="flex justify-center gap-4 mt-8">
-              <span className="h-10 w-10 inline-block bg-slate-200  rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
+              <span className="h-10 w-10 bg-slate-200  rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
                 <i className="ri-google-fill"></i>
               </span>
-              <span className="h-10 w-10 inline-block bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
+              <span className="h-10 w-10 bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
                 <i className="ri-facebook-fill"></i>
               </span>
-              <span className="h-10 w-10 inline-block bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
+              <span className="h-10 w-10 bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
                 <i className="ri-github-fill"></i>
               </span>
-              <span className="h-10 w-10 inline-block bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
+              <span className="h-10 w-10 bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
                 <i className="ri-linkedin-fill"></i>
               </span>
             </div>
@@ -264,7 +261,7 @@ const LoginPage = () => {
                 value={handlefunction(loginFormData.loginId)}
                 onChange={(e) => {
                   setUserVal(e.target.value);
-                  handleLoginChange(e)
+                  handleLoginChange(e);
                 }}
               />
             </div>
@@ -281,17 +278,22 @@ const LoginPage = () => {
             </div>
             {/* Display error message */}
             {errorMessage1.errLoginFields && (
-              <p className="text-red-500 text-center mt-3 font-semibold">{errorMessage1.errLoginFields}</p>
+              <p className="text-red-500 text-center mt-3 font-semibold">
+                {errorMessage1.errLoginFields}
+              </p>
             )}
             {/* Display error message */}
             {errorMessage1.errLogin && (
-              <p className="text-red-500 text-center font-semibold">{errorMessage1.errLogin}</p>
+              <p className="text-red-500 text-center font-semibold">
+                {errorMessage1.errLogin}
+              </p>
             )}
             <p className="text-center mt-3">
               <a href="/">forget Password?</a>
             </p>
             <div className="flex justify-center mt-6 mb-2">
-              <button onClick={handleSubmitLogin}
+              <button
+                onClick={handleSubmitLogin}
                 className="h-10 w-[35%] rounded-xl font-bold
              bg-blue-500 text-white transition duration-1000 ease-in-out transform hover:scale-105 hover:shadow-[0_0_15px_5px_rgba(59,130,246,1)]"
               >
@@ -309,16 +311,16 @@ const LoginPage = () => {
               Create Account
             </div>
             <div className="flex justify-center gap-4 mt-8">
-              <span className="h-10 w-10 inline-block bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base after:">
+              <span className="h-10 w-10 bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base after:">
                 <i className="ri-google-fill"></i>
               </span>
-              <span className="h-10 w-10 inline-block bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
+              <span className="h-10 w-10 bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
                 <i className="ri-facebook-fill"></i>
               </span>
-              <span className="h-10 w-10 inline-block bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
+              <span className="h-10 w-10 bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
                 <i className="ri-github-fill"></i>
               </span>
-              <span className="h-10 w-10 inline-block bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
+              <span className="h-10 w-10 bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
                 <i className="ri-linkedin-fill"></i>
               </span>
             </div>
@@ -328,7 +330,7 @@ const LoginPage = () => {
                 onChange={handleCreateChange}
                 name="username"
                 type="text"
-                value={createFormData.username }
+                value={createFormData.username}
                 required
                 placeholder="Enter Your Username"
                 className="w-[80%] h-10 bg-gray-300 pl-5 text-gray-900 border-none rounded-md placeholder:text-gray-600"
@@ -336,7 +338,9 @@ const LoginPage = () => {
             </div>
             {/* Display error message */}
             {errorMessage.errUsername && (
-              <p className="text-red-500 text-right pr-14 font-semibold text-sm">{errorMessage.errUsername}</p>
+              <p className="text-red-500 text-right pr-14 font-semibold text-sm">
+                {errorMessage.errUsername}
+              </p>
             )}
             <div className="flex justify-center">
               <input
@@ -351,7 +355,9 @@ const LoginPage = () => {
             </div>
             {/* Display error message */}
             {errorMessage.errEmail && (
-              <p className="text-red-500 text-right pr-14 font-semibold text-sm">{errorMessage.errEmail}</p>
+              <p className="text-red-500 text-right pr-14 font-semibold text-sm">
+                {errorMessage.errEmail}
+              </p>
             )}
             <div className="flex justify-center">
               <input
@@ -367,7 +373,9 @@ const LoginPage = () => {
 
             {/* Display error message */}
             {errorMessage.errFields && (
-              <p className="text-red-500 text-center font-semibold mt-2">{errorMessage.errFields}</p>
+              <p className="text-red-500 text-center font-semibold mt-2">
+                {errorMessage.errFields}
+              </p>
             )}
 
             <div className="flex justify-center mt-4 mb-2">
@@ -386,7 +394,10 @@ const LoginPage = () => {
             className="h-full bg-gray-500 w-1/2 absolute right-0 z-10"
           >
             <div className="h-full flex flex-col gap-4 justify-center items-center">
-              <p className="text-4xl font-medium text-center"> Hii {UserVal}...</p>
+              <p className="text-4xl font-medium text-center">
+                {" "}
+                Hii {UserVal}...
+              </p>
               <p className="text-center text-xl font-normal">
                 If not already a user <br />
                 Join us for better exprience

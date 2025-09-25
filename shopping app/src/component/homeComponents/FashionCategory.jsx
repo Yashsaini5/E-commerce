@@ -52,9 +52,9 @@ const FashionCategory = () => {
   </div>
 
       {/* Heading */}
-      <div className="w-[100vw] h-[16vh] relative z-10">
+      <div className="w-full h-[16vh] relative z-10">
         <h1 ref={ref}
-          className="h-[10vh] w-fit text-2xl md:text-5xl font-bold pt-4 z-10 text-center underline underline-offset-[15px] decoration-4 absolute right-20"
+          className="h-[10vh] w-fit text-2xl md:text-5xl font-bold pt-4 z-10 text-center underline underline-offset-[15px] decoration-4 absolute right-28"
         >
           Browse In Fashion
         </h1>

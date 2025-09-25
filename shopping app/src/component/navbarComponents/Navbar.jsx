@@ -1,25 +1,20 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap, { Expo } from "gsap";
+import gsap from "gsap";
 import { NavLink } from "react-router-dom";
-import LoginPage from "./LoginPage";
 import { DataContext } from "../../context/DataProvider";
 import SearchComponent from "./SearchComponent";
 
 const Navbar = ({}) => {
-  const { user, setUser, cart } = useContext(DataContext);
+  const { user, setUser, cart, fetchCart} = useContext(DataContext);
   const [isOpen, setIsOpen] = useState(false);
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
+  let cartItemCount = null
   let userIcon = "";
-  // console.log(user);
 
   if (user) {
     userIcon = user.username.toUpperCase().substring(0, 1);
+    fetchCart(user)
+    cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
   }
-
-  // const gsapLogoOpacity = useRef()
-
-  // function GSAPTimelineAnimation() {
 
   const gsapLogoOpacity = useRef();
   const gsapHomeOpacity = useRef();
@@ -30,46 +25,42 @@ const Navbar = ({}) => {
   const gsapicon3Opacity = useRef();
   const gsapicon4Opacity = useRef();
 
+  const navList = [
+    {
+      Name: "Home",
+      path: "/",
+      ref: gsapHomeOpacity
+    },{
+      Name: "Categories",
+      path: "/Categories",
+      ref: gsapCategoryOpacity
+    },{
+      Name: "About Us",
+      path: "/About",
+      ref: gsapAboutOpacity
+    }]
+
   useEffect(() => {
     // Create a GSAP timeline
     const tl = gsap.timeline({
-      defaults: { duration: 0.3, opacity: 1, ease: "power1.inOut" }, // Default settings for animations
+      defaults: { duration: 0.3, opacity: 1, ease: "power1.inOut" },
     });
 
     // Add animations to the timeline in sequence
-    tl.to(gsapLogoOpacity.current, { opacity: 1, duration: 0.8 })
-      .to(gsapHomeOpacity.current, { opacity: 1 })
-      .to(gsapCategoryOpacity.current, { opacity: 1 })
-      .to(gsapAboutOpacity.current, { opacity: 1 })
-      .to(gsapicon1Opacity.current, { x: -45, duration: 0.5 })
+    tl.to(gsapLogoOpacity.current, { opacity: 1, duration: 0.6 })
+      .to(gsapHomeOpacity.current, { opacity: 1, duration: 0.2 })
+      .to(gsapCategoryOpacity.current, { opacity: 1, duration: 0.2 })
+      .to(gsapAboutOpacity.current, { opacity: 1, duration: 0.2 })
+      .to(gsapicon1Opacity.current, { x: -45, duration: 0.2 })
       .to(gsapicon2Opacity.current, { x: -45, duration: 0.2 })
       .to(gsapicon3Opacity.current, { x: -45, duration: 0.2 })
       .to(gsapicon4Opacity.current, { x: -45, duration: 0.2 });
-
-    // You can also control the timeline (play, pause, reverse, etc.)
-    // tl.play(); // Starts the timeline (this happens by default)
-    // tl.pause(); // Pauses the timeline
-    // tl.reverse(); // Reverses the animation
   }, []);
 
-  // useGSAP(
-  //     () => {
-  //         gsap.to(gsapLogoOpacity.current, {
-  //            opacity:1,
-  //            duration:2.5,
-  //            ease:'power1.inOut'
-  //           });
-  //     },[]
-  //   );
-  // const [toggle, SetToggle] = useState(false)//change
-  //   const toggleVisibility = () => {
-  //     SetToggle(!toggle);//change
-  //     return toggle
-  //   }
   const handleLogout = () => {
-    document.cookie = "token=; path=/; max-age=0"
-    setUser(null)
-  }
+    document.cookie = "token=; path=/; max-age=0";
+    setUser(null);
+  };
 
   return (
     <header className="text-white fixed z-50">
@@ -78,20 +69,14 @@ const Navbar = ({}) => {
           <NavLink to={"/"}> ShopEase</NavLink>
         </div>
         <div className="flex gap-8">
-          <div ref={gsapHomeOpacity} className="font-medium opacity-0">
-            <NavLink to={"/"}> Home</NavLink>
+          {navList.map((list, index) => (
+            <div key={index} ref={list.ref} className="font-medium opacity-0">
+            <NavLink to={list.path}> {list.Name}</NavLink>
           </div>
-          <div ref={gsapCategoryOpacity} className="font-medium opacity-0">
-            <NavLink to={"/Categories"}> Categories </NavLink>
-          </div>
-          <div ref={gsapAboutOpacity} className="font-medium opacity-0">
-            <NavLink to={"/About"}> About Us </NavLink>
-          </div>
+          ))}
+
         </div>
         <div className="h-full max-w-48 flex items-center gap-4">
-          {/* {showSearch ? (<div></div>):(<div ref={gsapicon1Opacity} className='flex items-center justify-center h-full w-12 opacity-0'>
-                <i className="ri-search-line hover:text-2xl"></i>
-                </div>)} */}
 
           <div
             ref={gsapicon1Opacity}
@@ -114,12 +99,11 @@ const Navbar = ({}) => {
           >
             <NavLink to={`/Cart`}>
               <i className="ri-shopping-cart-2-fill hover:text-2xl">
-                {" "}
                 {cartItemCount > 0 && (
                   <span className="absolute right-1 bottom-4 bg-red-600 text-white text-xs rounded-full w-3 h-3 flex items-center justify-center">
                     {cartItemCount}
                   </span>
-                )}{" "}
+                )}
               </i>
             </NavLink>
           </div>
@@ -127,24 +111,50 @@ const Navbar = ({}) => {
             ref={gsapicon4Opacity}
             className="flex items-center justify-center h-full w-12 opacity-0"
           >
-              {user ? (
-                <>
-                <div className="w-10 h-10 absolute flex justify-center items-center cursor-pointer"onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
-                <div className="bg-indigo-400 w-7 h-7 rounded-full flex justify-center items-center cursor-pointer">
-                  {userIcon}
+            {user ? (
+              <>
+                <div
+                  className="w-10 h-10 absolute flex justify-center items-center cursor-pointer"
+                  onMouseEnter={() => setIsOpen(true)}
+                  onMouseLeave={() => setIsOpen(false)}
+                >
+                  <div className="bg-indigo-400 w-7 h-7 rounded-full flex justify-center items-center cursor-pointer">
+                    {userIcon}
+                  </div>
                 </div>
-                </div>
-                {isOpen && ( <div className="dropdown absolute -bottom-32 -right-2 -mt-2 w-40 h-36 bg-gray-200 rounded-lg shadow-2xl"  onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
-                <NavLink to={"/MyProfile"}><div className="px-3 py-3 border-b border-gray-400 hover:bg-gray-300 cursor-pointer text-black rounded-t-lg flex items-center gap-3"><div className="w-5 h-5 border-black border rounded-full flex items-center justify-center"><i className="ri-user-line mt-1"></i></div>My Profile</div></NavLink> 
-                <NavLink to={"/Orders"}><div className="px-3 py-3 border-b border-gray-400 hover:bg-gray-300 cursor-pointer text-black flex items-center gap-3"><i className="ri-box-3-line"></i>Orders</div></NavLink> 
-                <div className="px-3 py-3 hover:bg-gray-300 cursor-pointer text-black rounded-b-lg flex items-center gap-3" onClick={handleLogout}><i className="ri-logout-box-r-line"></i>Logout</div>
-                </div> )}
-                </>
-              ) : (
-                <NavLink to={"/LogIn"}>
+                {isOpen && (
+                  <div
+                    className="dropdown absolute -bottom-32 -right-2 -mt-2 w-40 h-36 bg-gray-200 rounded-lg shadow-2xl"
+                    onMouseEnter={() => setIsOpen(true)}
+                    onMouseLeave={() => setIsOpen(false)}
+                  >
+                    <NavLink to={"/MyProfile"}>
+                      <div className="px-3 py-3 border-b border-gray-400 hover:bg-gray-300 cursor-pointer text-black rounded-t-lg flex items-center gap-3">
+                        <div className="w-5 h-5 border-black border rounded-full flex items-center justify-center">
+                          <i className="ri-user-line mt-1"></i>
+                        </div>
+                        My Profile
+                      </div>
+                    </NavLink>
+                    <NavLink to={"/Orders"}>
+                      <div className="px-3 py-3 border-b border-gray-400 hover:bg-gray-300 cursor-pointer text-black flex items-center gap-3">
+                        <i className="ri-box-3-line"></i>Orders
+                      </div>
+                    </NavLink>
+                    <div
+                      className="px-3 py-3 hover:bg-gray-300 cursor-pointer text-black rounded-b-lg flex items-center gap-3"
+                      onClick={handleLogout}
+                    >
+                      <i className="ri-logout-box-r-line"></i>Logout
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <NavLink to={"/LogIn"}>
                 <i className="ri-user-fill hover:text-2xl"></i>
-                </NavLink>
-              )}
+              </NavLink>
+            )}
           </div>
         </div>
       </div>

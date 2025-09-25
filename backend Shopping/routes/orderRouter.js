@@ -4,7 +4,7 @@ const {placeOrderCOD, placeOrderStripe, verifyStripe, placeOrderRazorpay, userOr
 const router = express.Router();
 
 //admin features
-router.post("/orderList",authMiddleware, isAdminMiddleware, allOrderAdmin)
+router.get("/orderList",authMiddleware, isAdminMiddleware, allOrderAdmin)
 router.post("/status",authMiddleware, isAdminMiddleware, updateStatus)
 
 //payment fetures

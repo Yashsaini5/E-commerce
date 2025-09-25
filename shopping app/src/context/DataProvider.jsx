@@ -8,7 +8,7 @@ const DataProvider = ({ children }) => {
   const url = "http://localhost:5000/api"
   const navigate = useNavigate()
   const [data, setData] = useState(); //stores product data
-  const [cart, setCart] = useState([]) //stores cart item
+  const [cart, setCart] = useState([])
   const [wishlist, setWishlist] = useState([])
   const [user, setUser] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);

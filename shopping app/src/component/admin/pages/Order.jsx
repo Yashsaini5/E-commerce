@@ -8,9 +8,8 @@ const Order = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.post(
+        const res = await axios.get(
   'http://localhost:5000/api/order/orderList',
-  {}, 
   { withCredentials: true } 
 );
         setOrders(res.data);
@@ -65,7 +64,7 @@ const Order = () => {
           </thead>
          <tbody>
   {orders.map((order, index) => (
-    <tr key={order._id} className="bg-white border-b hover:bg-gray-100">
+    <tr key={order._id} className="bg-white border-b hover:bg-gray-50">
       {/* Index */}
       <td className="px-4 py-3 text-center">{index + 1}</td>
 
