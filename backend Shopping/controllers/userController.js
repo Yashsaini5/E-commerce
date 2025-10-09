@@ -37,7 +37,7 @@ const loginUser = async (req, res) => {
 
   const isPasswordMatch = await bcrypt.compare(password, existingUser.password);
 
-  if (!existingUser && !isPasswordMatch) {
+  if (!existingUser || !isPasswordMatch) {
     return res.status(400).json({ message: "wrong ID or Password" });
   }
 
