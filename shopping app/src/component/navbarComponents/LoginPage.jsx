@@ -188,7 +188,6 @@ const LoginPage = () => {
       errLoginFields: "",
       errLogin: "",
     });
-    console.log(loginFormData);
   };
   const handleSubmitLogin = async (e) => {
     e.preventDefault();
@@ -210,7 +209,11 @@ const LoginPage = () => {
       const result = await response.json();
       console.log("success", result);
       if (!response.ok) {
-        setErrorMessage1({ errLogin: result.errLogin });
+        setErrorMessage1({ errLogin: result.message });
+        setLoginFormData({
+          loginId: "",
+          password: "",
+        });
       } else {
         window.location.href = "/";
       }
