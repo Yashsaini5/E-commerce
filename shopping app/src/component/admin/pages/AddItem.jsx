@@ -103,7 +103,7 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
+    // console.log("Form Data Submitted:", formData);
 
     const formDataToSend = new FormData();
 
@@ -124,7 +124,7 @@ const AddProduct = () => {
     formData.images.forEach((file, i) => {
       if (file) {
         formDataToSend.append(`images`, file);
-        console.log(`Appending image ${i}:`, file.name);
+        // console.log(`Appending image ${i}:`, file.name);
       }
     });
 

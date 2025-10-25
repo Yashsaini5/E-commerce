@@ -5,18 +5,30 @@ import { DataContext } from "../../context/DataProvider";
 import SearchComponent from "./SearchComponent";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({}) => {
   const { user, setUser, cart, fetchCart} = useContext(DataContext);
   const [isOpen, setIsOpen] = useState(false);
-  let cartItemCount = null
-  let userIcon = "";
+  const [userIcon, setUserIcon] = useState("");
+  const [cartItemCount, setCartItemCount] = useState(null)
+  const navigate = useNavigate()
 
-  if (user) {
-    userIcon = user.username.toUpperCase().substring(0, 1);
-    fetchCart(user)
-    cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
-  }
+  useEffect(() => {
+    if (user) {
+      setUserIcon(user.username?.toUpperCase().substring(0, 1) || "");
+      fetchCart(); // will now run only once per login
+    }
+  }, [user]);
+
+    useEffect(() => {
+    if (cart && cart.length > 0) {
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+      setCartItemCount(count);
+    } else {
+      setCartItemCount(0);
+    }
+  }, [cart]);
 
   const gsapLogoOpacity = useRef();
   const gsapHomeOpacity = useRef();
@@ -68,7 +80,8 @@ const Navbar = ({}) => {
 
     document.cookie = "token=; path=/; max-age=0";
     setUser(null);
-    window.location.href = "/";
+    setCartItemCount(0)
+    navigate("/");
   };
 
   return (

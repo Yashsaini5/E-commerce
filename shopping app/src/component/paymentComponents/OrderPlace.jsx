@@ -75,8 +75,8 @@ const OrderPlace = () => {
       if (paymentData === "Stripe") {
         // Redirect to Stripe checkout page
         const sessionUrl = response.data.url;
-        console.log("order placed successfully", response.data);
-        console.log("Session URL:", sessionUrl);
+        // console.log("order placed successfully", response.data);
+        // console.log("Session URL:", sessionUrl);
         if (!sessionUrl) {
           console.error("Stripe session URL is missing!");
           return alert("Something went wrong while connecting to Stripe.");

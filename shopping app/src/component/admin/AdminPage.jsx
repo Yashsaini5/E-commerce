@@ -16,14 +16,22 @@ const sidebarLinks = [
 const AdminPage = () => {
   const { user, setUser } = useContext(DataContext);
   const navigate = useNavigate();
-  console.log(user?.role);
+  // console.log(user?.role);
   if (user?.role !== "admin") {
     navigate("/");
   }
-  const handleLogout = () => {
-    document.cookie = "token=; path=/; max-age=0";
-    setUser(null);
-  };
+
+  const handleLogout = async () => {
+      try {
+        await signOut(auth);
+      } catch (error) {
+         console.warn("Firebase sign-out skipped or failed:", error.message);
+      }
+  
+      document.cookie = "token=; path=/; max-age=0";
+      setUser(null);
+      navigate("/")
+    };
 
   return (
     <div className="h-screen w-screen overflow-hidden">

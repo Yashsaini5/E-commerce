@@ -53,7 +53,7 @@ const loginUser = async (req, res) => {
   var token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET);
   res.cookie("token", token);
 
-  res.send({ message: "logged in successfully" });
+  res.status(200).json(existingUser)
 }
 
 const firebaseLogin = async (req, res) => {
@@ -77,7 +77,7 @@ const firebaseLogin = async (req, res) => {
 
     var jwttoken = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     res.cookie("token", jwttoken )
-    res.status(200).json({message: "Firebase login success"})
+    res.status(200).json(user)
 
   } catch (error) {
     console.error("Firebase login error:", error);

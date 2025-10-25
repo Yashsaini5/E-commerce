@@ -5,7 +5,7 @@
 backend Shopping/.env
 *.env
 **/.env
-**/serviceAccountKey.json
+
 # Log files
 **/*.log
 
@@ -23,3 +23,7 @@ Thumbs.db
 
 # Cache
 **/.cache/
+
+shopping app/src/firebaseConfig.js
+**firebaseConfig.js
+**/serviceAccountKey.json

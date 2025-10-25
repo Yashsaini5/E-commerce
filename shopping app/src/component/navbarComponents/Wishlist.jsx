@@ -1,26 +1,26 @@
 import React,{useContext,useEffect} from 'react'
 import { Link } from "react-router-dom";
 import { DataContext } from '../../context/DataProvider'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Wishlist = () => {
 
   const {wishlist, user , fetchWishlist, addToCart, removeFromWishlist} = useContext(DataContext)
   const navigate = useNavigate()
+  const location = useLocation()
 
   // if (!user) {
   //   return <div>Loading...</div>; // Fallback UI
   // } 
   useEffect(() => {
     if (user == null) {
-      navigate("/login");
+      localStorage.setItem("redirectAfterLogin", location.pathname);
+      navigate("/login", { replace: true });
+    } else {
+       fetchWishlist(user)
     }
   }, [user, navigate]);
-  useEffect(() => {
-   if(user){
-      fetchWishlist(user)
-    }
-  }, [user])
+ 
   // console.log("wishlist", wishlist)
   if(!user || user == null) return null
 
@@ -42,7 +42,7 @@ const Wishlist = () => {
             {item.product && item.product.images ? (<img src={item.product.images[0]} alt='' className='object-cover object-top h-full w-full hover:scale-105'></img>):(<p>no images</p>)}
             </Link>
             </div>
-            {console.log(item)}
+            {/* {console.log(item)} */}
             <div className='h-24 w-full p-2 flex flex-col'>
             <Link to={`/product/${item.product?._id}`}>
               <div className='text-lg font-medium hover:underline'>{item.product.name.length>29 ? item.product.name.toString().substring(0,29) + "..." : item.product.name}</div>

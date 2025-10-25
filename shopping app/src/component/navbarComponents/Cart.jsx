@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DataContext } from "../../context/DataProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 
 const Cart = () => {
   const { cart, user, fetchCart, updatedCartQuantity, removeFromCart } =
     useContext(DataContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
   const subtotal = cart.reduce(
     (acc, item) => acc + item.variant?.oldPrice * item.quantity,
@@ -22,16 +23,14 @@ const Cart = () => {
     0
   );
 
-  useEffect(() => {
-    if (user == null) {
-      navigate("/login");
+   useEffect(() => {
+    if (!user) {
+       localStorage.setItem("redirectAfterLogin", location.pathname);
+      navigate("/login", { replace: true });
+    } else {
+       fetchCart(user);
     }
-  }, [user, navigate]);
-  useEffect(() => {
-    if (user) {
-      fetchCart(user);
-    }
-  }, [user]);
+  }, [user, navigate, location]);
 
   return (
     <>

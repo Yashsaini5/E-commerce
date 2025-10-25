@@ -1,6 +1,6 @@
 import React, { useState,useContext,useEffect } from "react";
 import { DataContext } from "../../context/DataProvider";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import RelatedProduct from "../productComponents/RelatedProduct";
 import { useNavigate } from "react-router-dom";
 
@@ -54,6 +54,7 @@ import { useNavigate } from "react-router-dom";
 const Product = () => {
   const { id } = useParams();
   const {
+    user,
     data,
     addToCart,
     addToWishlist,
@@ -62,6 +63,7 @@ const Product = () => {
     fetchWishlist,
   } = useContext(DataContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [mainImg, setMainImg] = useState(null);
   const [isLiked, setIsLiked] = useState(null);
@@ -114,6 +116,16 @@ const Product = () => {
     }
     await fetchWishlist();
   };
+
+  const handleAddToCart = async () => {
+    if(user){
+    await addToCart(product?._id,1,selectedVariant?.size,selectedVariant?.newPrice,selectedVariant?.oldPrice)
+    navigate("/cart");
+    } else {
+      localStorage.setItem("redirectAfterLogin", location.pathname);
+      navigate("/login", { replace: true });
+    }
+  } 
     
   return (
     <div>
@@ -201,9 +213,7 @@ const Product = () => {
               </div>
             </div>
             <div className="flex gap-5">
-            <div className="mt-6 border-2 bg-orange-300 w-fit py-2 px-20 cursor-pointer" onClick={async ()=> {await addToCart(product._id,1,selectedVariant.size,selectedVariant.newPrice,selectedVariant.oldPrice) 
-               navigate("/cart");
-            }}>Add to cart</div>
+            <div className="mt-6 border-2 bg-orange-300 w-fit py-2 px-20 cursor-pointer" onClick={() => handleAddToCart(product?._id,1,selectedVariant?.size,selectedVariant?.newPrice,selectedVariant?.oldPrice)}>Add to cart</div>
             {/* <div className="mt-6 border-2 bg-orange-300 w-fit py-2 px-10 cursor-pointer" onClick={async ()=> {await addToCart(product._id,1,selectedVariant.size,selectedVariant.newPrice,selectedVariant.oldPrice) 
                navigate("/cart");
             }}>Buy Now</div> */}
@@ -219,8 +229,8 @@ const Product = () => {
             </div>
             <div className="h-fit mt-2 pb-10">
               <p className="text-2xl font-medium mt-4">Product Specifications : </p>
-              {product.specifications.map((specification) => (
-                <div className="flex whitespace-normal gap-5">
+              {product.specifications.map((specification, index) => (
+                <div key={index} className="flex whitespace-normal gap-5">
                   <div className="flex flex-col">
               <p className="mt-2 text-base font-medium w-56 whitespace-normal">{specification.key} :</p>
               </div>

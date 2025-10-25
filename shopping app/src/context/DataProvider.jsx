@@ -1,12 +1,12 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { useCallback, createContext, useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export const DataContext = createContext();
 
 const DataProvider = ({ children }) => {
   const url = "http://localhost:5000/api"
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [data, setData] = useState(); //stores product data
   const [cart, setCart] = useState([])
   const [wishlist, setWishlist] = useState([])
@@ -16,18 +16,22 @@ const DataProvider = ({ children }) => {
 // Fetch user Id when compIdonent mounts
 useEffect(() => {
   const fetchUser = async () => {
+
     try {
-      const response = await axios.get(`${url}/user/me`,{
-        withCredentials:"true"
+      const res = await axios.get(`${url}/user/me`, { withCredentials: true });
+      if (!res.data) return;
+
+      // Only update if data actually changed
+      setUser(prev => {
+        if (JSON.stringify(prev) !== JSON.stringify(res.data)) {
+          return res.data;
+        }
+        return prev;
       });
-      console.log(response.data)
-      setUser(response.data);
-      
-    } catch (error) {
-      console.error("Error fetching user:", error);
+    } catch (err) {
+      console.log("Error fetching user:", err.message);
     }
   };
-
   fetchUser();
 }, []);
 
@@ -45,13 +49,12 @@ useEffect(() => {
   }, []);
   
   //fetch cart item for user
-  
-    const fetchCart = async () => {
+   const fetchCart = async () => {
       try{
         const response = await axios.get(`${url}/cart`,{
           withCredentials: "true",
         })
-        if (!user || user == null ) return navigate("/login");
+        // if (!user || user == null ) return navigate("/login");
         if (!response.data || !Array.isArray(response.data)) {
           console.error("Invalid cart data:", response.data);
           return setCart([]);
@@ -61,12 +64,34 @@ useEffect(() => {
         console.log("error fetching cart:", error.response?.data || error.message)
       }
     }
-    useEffect(() => {
-      if(user){
-        fetchCart()
-        fetchWishlist()
-      } 
-  }, [])
+  
+//  useEffect(() => {
+//   let didRun = false;
+
+//   const runOnce = async () => {
+//     if (didRun) return;
+//     didRun = true;
+//     await fetchCart();
+//   };
+
+//   runOnce();
+// }, []); 
+
+  //   useEffect(() => {
+    
+
+  //   fetchWishlist()
+  // }, [])
+    
+  //   useEffect(() => {
+  //      if (user) {
+  //     fetchCart();
+  //     fetchWishlist();
+  //   } else {
+  //     setCart([]);
+  //     setWishlist([]);
+  //   }
+  // }, [user])
 
   const updatedCartQuantity = async (productId, newQuantity, size) => {
     try{
@@ -110,14 +135,16 @@ useEffect(() => {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.error("Unauthorized! Redirecting to login...");
-        navigate("/login");}
+        // navigate("/login");
+      }
     }
-    console.log(cart);
+    // console.log(cart);
     
   };
 
 //wishlist
-  const fetchWishlist = async () => {
+
+ const fetchWishlist = async () => {
     try{
       const response = await axios.get(`${url}/wishlist`,{
         withCredentials:"true",
@@ -153,7 +180,8 @@ useEffect(() => {
     }catch(error){
       if (error.response && error.response.status === 401) {
         console.error("Unauthorized! Redirecting to login...");
-        navigate("/login");}
+        // navigate("/login");
+      }
     }
   }
 

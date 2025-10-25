@@ -54,7 +54,7 @@ const ProductList = () => {
           product.name?.toLowerCase().includes(query.toLowerCase())
         );
       });
-      console.log(results);
+      // console.log(results);
       setSearchedProducts(results);
       setFilteredProducts(results);
 

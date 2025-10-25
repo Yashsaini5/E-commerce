@@ -12,11 +12,17 @@ const MyProfile = () => {
   const { user, setUser } = useContext(DataContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    document.cookie = "token=; path=/; max-age=0";
-    setUser(null);
-    navigate("/");
-  };
+  const handleLogout = async () => {
+     try {
+       await signOut(auth);
+     } catch (error) {
+        console.warn("Firebase sign-out skipped or failed:", error.message);
+     }
+ 
+     document.cookie = "token=; path=/; max-age=0";
+     setUser(null);
+     navigate("/");
+   };
 
   return (
     <>

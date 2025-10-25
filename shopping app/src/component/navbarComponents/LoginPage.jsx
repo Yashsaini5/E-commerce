@@ -1,10 +1,18 @@
 import { useGSAP } from "@gsap/react";
 import gsap, { Expo } from "gsap";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
+import { DataContext } from "../../context/DataProvider";
 import { auth, googleProvider } from "../../firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = localStorage.getItem("redirectAfterLogin") || "/";
+  // console.log(from)
+  const {user, setUser, fetchCart} = useContext(DataContext)
+
   const gsapcreate = useRef();
   const gsapWel = useRef();
   const gsapLogin = useRef();
@@ -115,8 +123,11 @@ const LoginPage = () => {
       });
 
       const data = await res.json();
-      console.log(data)
-      window.location.href = "/";
+      // console.log(data)
+      setUser(data)
+      // fetchCart()
+       localStorage.removeItem("redirectAfterLogin");
+       navigate(from);
     } catch (error) {
       console.error("Google login error:", error);
     }
@@ -180,7 +191,8 @@ const LoginPage = () => {
           errEmail: result.erremail,
         });
       } else {
-        window.location.href = "/";
+         localStorage.removeItem("redirectAfterLogin");
+       navigate(from);
       }
     } catch (error) {
       console.log("error", error);
@@ -226,7 +238,7 @@ const LoginPage = () => {
         credentials: "include",
       });
       const result = await response.json();
-      console.log("success", result);
+      // console.log("success", result);
       if (!response.ok) {
         setErrorMessage1({ errLogin: result.message });
         setLoginFormData({
@@ -234,7 +246,9 @@ const LoginPage = () => {
           password: "",
         });
       } else {
-        window.location.href = "/";
+        setUser(result)
+        localStorage.removeItem("redirectAfterLogin");
+       navigate(from);
       }
     } catch (error) {
       console.log("error", error);
