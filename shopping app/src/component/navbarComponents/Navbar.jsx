@@ -3,6 +3,8 @@ import gsap from "gsap";
 import { NavLink } from "react-router-dom";
 import { DataContext } from "../../context/DataProvider";
 import SearchComponent from "./SearchComponent";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 
 const Navbar = ({}) => {
   const { user, setUser, cart, fetchCart} = useContext(DataContext);
@@ -57,9 +59,16 @@ const Navbar = ({}) => {
       .to(gsapicon4Opacity.current, { x: -45, duration: 0.2 });
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+       console.warn("Firebase sign-out skipped or failed:", error.message);
+    }
+
     document.cookie = "token=; path=/; max-age=0";
     setUser(null);
+    window.location.href = "/";
   };
 
   return (

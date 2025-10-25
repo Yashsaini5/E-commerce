@@ -1,6 +1,8 @@
 import { useGSAP } from "@gsap/react";
 import gsap, { Expo } from "gsap";
 import React, { useRef, useState } from "react";
+import { auth, googleProvider } from "../../firebaseConfig";
+import { signInWithPopup } from "firebase/auth";
 
 const LoginPage = () => {
   const gsapcreate = useRef();
@@ -97,11 +99,28 @@ const LoginPage = () => {
       </button>
     );
   }
-  // toggle function
-  //   const [toggle, SetToggle] = useState(false)
-  //   const toggleVisibility = () => {
-  //     SetToggle(!toggle);
-  //   }
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const token = await result.user.getIdToken();
+      
+      const res = await fetch("http://localhost:5000/api/user/firebase-login",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({token}),
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      console.log(data)
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Google login error:", error);
+    }
+  };
 
   const [UserVal, setUserVal] = useState("user");
   function handlefunction() {
@@ -239,18 +258,10 @@ const LoginPage = () => {
         h-full bg-white w-1/2 flex flex-col justify-center z-10"
           >
             <div className="text-center text-4xl font-semibold">Sign In</div>
-            <div className="flex justify-center gap-4 mt-8">
-              <span className="h-10 w-10 bg-slate-200  rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
+            <div className="flex justify-center mt-8">
+              <span className="h-10 w-[80%] bg-slate-200 gap-2 rounded-md flex items-center justify-center text-base hover:text-lg hover:border-sky-500 hover:ring-2" onClick={handleGoogleLogin}>
                 <i className="ri-google-fill"></i>
-              </span>
-              <span className="h-10 w-10 bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
-                <i className="ri-facebook-fill"></i>
-              </span>
-              <span className="h-10 w-10 bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
-                <i className="ri-github-fill"></i>
-              </span>
-              <span className="h-10 w-10 bg-slate-200 rounded-md flex items-center justify-center text-base hover:text-xl hover:border-sky-500 hover:ring-2">
-                <i className="ri-linkedin-fill"></i>
+                <span className="text-slate-800 cursor-pointer">Login with Google</span>
               </span>
             </div>
             <p className="text-center mt-5">Login With Username/Email </p>
@@ -313,18 +324,10 @@ const LoginPage = () => {
             <div className="text-center text-4xl font-semibold">
               Create Account
             </div>
-            <div className="flex justify-center gap-4 mt-8">
-              <span className="h-10 w-10 bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base after:">
+            <div className="flex justify-center mt-8">
+              <span className="h-10 w-[80%] bg-slate-200 gap-2 rounded-md flex items-center justify-center text-base hover:text-lg hover:border-sky-500 hover:ring-2" onClick={handleGoogleLogin}>
                 <i className="ri-google-fill"></i>
-              </span>
-              <span className="h-10 w-10 bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
-                <i className="ri-facebook-fill"></i>
-              </span>
-              <span className="h-10 w-10 bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
-                <i className="ri-github-fill"></i>
-              </span>
-              <span className="h-10 w-10 bg-slate-200 border-[1.5px] border-slate-950 rounded-md flex items-center justify-center text-base">
-                <i className="ri-linkedin-fill"></i>
+                <span className="text-slate-800 cursor-pointer">Login with Google</span>
               </span>
             </div>
             <p className="text-center mt-5">Register with E-mail</p>

@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+const admin = require('../config/firebaseAdmin');
 
 const createUser = async (req, res) => {
   const { username, email, password } = req.body;
@@ -13,6 +14,10 @@ const createUser = async (req, res) => {
   if (existingEmail) {
     return res.status(400).json({ erremail: "Account already exists! " });
   }
+
+  if (!password) {
+  return res.status(400).json({ error: "Password is required for local login." });
+}
 
   const salt = await bcrypt.genSalt(10);
   const encriptedPassword = await bcrypt.hash(password, salt);
@@ -35,6 +40,10 @@ const loginUser = async (req, res) => {
     //$or -> mongodb query operator that allow to search for documents that matches at least 1 of given condition
   });
 
+   if (!password) {
+  return res.status(400).json({ error: "Password is required for local login." });
+}
+
   const isPasswordMatch = await bcrypt.compare(password, existingUser.password);
 
   if (!existingUser || !isPasswordMatch) {
@@ -45,6 +54,35 @@ const loginUser = async (req, res) => {
   res.cookie("token", token);
 
   res.send({ message: "logged in successfully" });
+}
+
+const firebaseLogin = async (req, res) => {
+  try {
+    const { token } = req.body;
+    const decode = await admin.auth().verifyIdToken(token)
+
+    const { email, name, uid } = decode;
+
+    let user = await User.findOne({email});
+
+    if(!user) {
+      user = await User.create({
+        username: name || email.split("@")[0],
+        email,
+        password: null,
+        authProvider: "firebase",
+        firebaseUid: uid,
+      });
+    }
+
+    var jwttoken = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res.cookie("token", jwttoken )
+    res.status(200).json({message: "Firebase login success"})
+
+  } catch (error) {
+    console.error("Firebase login error:", error);
+    res.status(400).json({ message: "Firebase login failed" });
+  }
 }
 
 const userAuthentication = async (req, res) => {
@@ -99,4 +137,4 @@ const deleteAddressByIndex = async (req, res) => {
          }
 }
 
-module.exports = {createUser, loginUser, userAuthentication, addAddress, deleteAddressByIndex}
+module.exports = {createUser, loginUser, firebaseLogin, userAuthentication, addAddress, deleteAddressByIndex}

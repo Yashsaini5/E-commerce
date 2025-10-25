@@ -70,7 +70,7 @@ const OrderPlace = () => {
         withCredentials: true,
       });
 
-      console.log("order placed successfully", response.data);
+      // console.log("order placed successfully", response.data);
 
       if (paymentData === "Stripe") {
         // Redirect to Stripe checkout page
