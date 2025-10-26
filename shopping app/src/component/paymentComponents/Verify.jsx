@@ -13,10 +13,11 @@ const Verify = () => {
     const session_id = searchParams.get('session_id')
     // console.log(success, orderId)
 
+      const apiUrl = import.meta.env.VITE_BACKEND_URL;
     const verifyPayment = async () => {
 
         try {
-            const response = await axios.post("http://localhost:5000/api/order/verifyStripe",{success, session_id }, {
+            const response = await axios.post( apiUrl + "/api/order/verifyStripe",{success, session_id }, {
                 withCredentials: true,
               })
 

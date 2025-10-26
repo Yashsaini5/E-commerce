@@ -7,10 +7,12 @@ const AddCategory = () => {
   const [sizes, setSizes] = useState([""]);
   const [categories, setCategories] = useState([]);
 
+  const apiUrl = import.meta.env.VITE_BACKEND_URL;
+
   // Fetchs categories on component mount
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/categories", { withCredentials: "true" })
+      .get(apiUrl+ "/api/categories", { withCredentials: "true" })
       .then((response) => setCategories(response.data))
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
@@ -44,7 +46,7 @@ const AddCategory = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/categories",
+        apiUrl+"/api/categories",
         {
           name,
           subcategories: subcategories.filter((sub) => sub.trim() !== ""), // Remove empty subcategories

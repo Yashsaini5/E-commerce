@@ -107,13 +107,14 @@ const LoginPage = () => {
       </button>
     );
   }
-
+ 
+    const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const token = await result.user.getIdToken();
       
-      const res = await fetch("http://localhost:5000/api/user/firebase-login",{
+      const res = await fetch(apiUrl + "/api/user/firebase-login",{
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -173,7 +174,7 @@ const LoginPage = () => {
     try {
       //response is a object that contains http response, including status, header, and data returned by server
       const response = await fetch(
-        "http://localhost:5000/api/user/createUser",
+         apiUrl + "/api/user/createUser",
         {
           method: "POST",
           headers: {
@@ -191,7 +192,8 @@ const LoginPage = () => {
           errEmail: result.erremail,
         });
       } else {
-         localStorage.removeItem("redirectAfterLogin");
+         setUser(result)
+        localStorage.removeItem("redirectAfterLogin");
        navigate(from);
       }
     } catch (error) {
@@ -229,7 +231,7 @@ const LoginPage = () => {
 
     try {
       //response is a object that contains http response, including status, header, and data returned by server
-      const response = await fetch("http://localhost:5000/api/user/login", {
+      const response = await fetch( apiUrl + "/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

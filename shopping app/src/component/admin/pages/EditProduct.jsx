@@ -7,8 +7,10 @@ const EditProduct = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
+     const apiUrl = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/products/${id}`,{withCredentials: true})
+    axios.get(apiUrl + `/api/products/${id}`,{withCredentials: true})
       .then((res) => {
         setProduct(res.data);
         setLoading(false);
@@ -30,7 +32,7 @@ const EditProduct = () => {
   };
 
   const handleUpdate = () => {
-    axios.put(`http://localhost:5000/api/products/${id}`, product,{withCredentials: true})
+    axios.put(apiUrl + `/api/products/${id}`, product,{withCredentials: true})
       .then(() => alert("Product updated successfully"))
       .catch((err) => {
         console.error("Update failed", err);

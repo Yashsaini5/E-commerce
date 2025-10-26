@@ -1,10 +1,9 @@
+require("dotenv").config();
 const express = require("express");
-const dotenv = require("dotenv");
 const setupMiddleware = require("./middleware/setUpMiddleware");
 const setupRoutes = require("./routes/index");
 const connectDB = require("./config/db");
 const app = express();
-dotenv.config();
 
 setupMiddleware(app);
 

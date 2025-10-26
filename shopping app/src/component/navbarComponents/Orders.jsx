@@ -10,10 +10,11 @@ const Orders = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+     const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const loadOrders = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/order/userOrders",
+         apiUrl + "/api/order/userOrders",
         { withCredentials: true }
       );
       setOrders(response.data.orders);

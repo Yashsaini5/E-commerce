@@ -1,6 +1,7 @@
 const Product = require("../models/product");
 const category = require("../models/category");
 const mongoose = require("mongoose");
+const cloudinary_js_config = require("../config/cloudinaryConfig")
 
 const productCreation = async (req, res) => {
   // console.log("Uploaded files:", req.files);
@@ -25,15 +26,31 @@ const productCreation = async (req, res) => {
   
 
 //   console.log(req.files)
-  const imagePaths = req.files.map(
-    (file) => `http://localhost:5000/images/uploads/${file.filename}`
-  );
-//   const sizes = JSON.parse(req.body.sizes); this was earliar code to fetch size
+const uploadedImages = [];
+for (const file of req.files) {
+  const result = await new Promise((resolve, reject) => {
+    const stream = cloudinary_js_config.uploader.upload_stream(
+      { folder: "ecommerce" },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    stream.end(file.buffer);
+  });
+
+  uploadedImages.push(result.secure_url);
+}
+
+
+  // const imagePaths = req.files.map(
+  //   (file) => `http://localhost:5000/images/uploads/${file.filename}`
+  // );
 
   const createdProduct = await Product.create({
     name,
     description,
-    images: imagePaths,
+    images: uploadedImages,
     category,
     subCategory: subcategory,
     brand,

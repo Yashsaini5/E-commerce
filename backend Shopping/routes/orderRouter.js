@@ -1,6 +1,6 @@
 const express = require("express")
 const {authMiddleware, isAdminMiddleware} = require("../middleware/authMiddleware")
-const {placeOrderCOD, placeOrderStripe, verifyStripe, placeOrderRazorpay, userOrders, allOrderAdmin, updateStatus} = require("../controllers/orderController")
+const {placeOrderCOD, placeOrderStripe, placeOrderRazorpay, userOrders, allOrderAdmin, updateStatus} = require("../controllers/orderController")
 const router = express.Router();
 
 //admin features
@@ -13,7 +13,7 @@ router.post("/placeOrderStripe",authMiddleware, placeOrderStripe)
 router.post("/placeOrderRazorpay",authMiddleware, placeOrderRazorpay)
 
 //verify payment
-router.post("/verifyStripe",authMiddleware, verifyStripe)
+// router.post("/verifyStripe",authMiddleware, verifyStripe)
 
 router.get("/userOrders", authMiddleware, userOrders)
 

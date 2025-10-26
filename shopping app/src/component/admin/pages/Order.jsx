@@ -5,11 +5,12 @@ const Order = () => {
   const [orders, setOrders] = useState([]);
   const [statusUpdates, setStatusUpdates] = useState({});
 
+     const apiUrl = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const res = await axios.get(
-  'http://localhost:5000/api/order/orderList',
+  apiUrl + '/api/order/orderList',
   { withCredentials: true } 
 );
         setOrders(res.data);
@@ -30,7 +31,7 @@ const Order = () => {
     if (!newStatus) return;
 
     try {
-      const res = await axios.post('http://localhost:5000/api/order/status', {
+      const res = await axios.post( apiUrl + '/api/order/status', {
         orderId,
         status: newStatus,
       },{withCredentials:true});

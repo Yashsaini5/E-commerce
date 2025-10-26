@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink, Route, Routes, useNavigate } from "react-router-dom";
 import { DataContext } from "../../context/DataProvider";
 import AddItem from "./pages/AddItem";
@@ -17,10 +17,13 @@ const AdminPage = () => {
   const { user, setUser } = useContext(DataContext);
   const navigate = useNavigate();
   // console.log(user?.role);
-  if (user?.role !== "admin") {
+
+useEffect(() => {
+  if (user && user.role !== "admin") {
     navigate("/");
   }
-
+}, [user]);
+  
   const handleLogout = async () => {
       try {
         await signOut(auth);

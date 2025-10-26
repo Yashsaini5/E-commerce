@@ -6,10 +6,11 @@ const ItemList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
+    const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const fetchProducts = () => {
     setLoading(true);
     axios
-      .get("http://localhost:5000/api/products")
+      .get(apiUrl + "/api/products")
       .then((res) => {
         if (Array.isArray(res.data)) {
           setProducts(res.data);
@@ -32,7 +33,7 @@ const ItemList = () => {
       return;
 
     axios
-      .delete(`http://localhost:5000/api/products/${productId}`, {
+      .delete(apiUrl + `/api/products/${productId}`, {
         withCredentials: true,
       })
       .then(() => {

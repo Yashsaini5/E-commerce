@@ -44,12 +44,12 @@ const ManageAddress = () => {
   const handleChange = (e) => {
     setNewAddress({ ...newAddress, [e.target.name]: e.target.value });
   };
-
+    const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const handleAddAddress = async () => {
     if (!validate()) return;
 
     try {
-      const { data } = await axios.put("http://localhost:5000/api/user/add-address",newAddress, { withCredentials: true });
+      const { data } = await axios.put( apiUrl + "/api/user/add-address",newAddress, { withCredentials: true });
       setUser(data);
       setNewAddress({
         firstName: "",
@@ -70,7 +70,7 @@ const ManageAddress = () => {
 
   const handleDelete = async (index) => {
     try {
-      const { data } = await axios.put("http://localhost:5000/api/user/delete-address", { index } ,{ withCredentials: true });
+      const { data } = await axios.put( apiUrl + "/api/user/delete-address", { index } ,{ withCredentials: true });
       setUser(data);
     } catch (error) {
       console.error("Delete failed", error);

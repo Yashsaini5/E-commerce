@@ -3,7 +3,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDZsgcmIlQ-_e5Idv2ggsVF_f-YAyZEL_Q",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "shopease-2e8ac.firebaseapp.com",
   projectId: "shopease-2e8ac",
   storageBucket: "shopease-2e8ac.firebasestorage.app",

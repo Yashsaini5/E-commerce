@@ -5,7 +5,8 @@ import axios from "axios";
 export const DataContext = createContext();
 
 const DataProvider = ({ children }) => {
-  const url = "http://localhost:5000/api"
+    const apiUrl = import.meta.env.VITE_BACKEND_URL;
+  const url = apiUrl + "/api"
   // const navigate = useNavigate()
   const [data, setData] = useState(); //stores product data
   const [cart, setCart] = useState([])

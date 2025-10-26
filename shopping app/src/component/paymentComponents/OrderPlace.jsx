@@ -32,6 +32,7 @@ const OrderPlace = () => {
     setPaymentData( e.target.value );
   };
 
+     const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -65,7 +66,7 @@ const OrderPlace = () => {
     };
 
     try {
-      const endpoint = `http://localhost:5000/api/order/placeOrder${paymentData}`;
+      const endpoint = apiUrl + `/api/order/placeOrder${paymentData}`;
       const response = await axios.post(endpoint, orderProducts, {
         withCredentials: true,
       });

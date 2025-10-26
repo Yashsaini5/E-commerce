@@ -21,10 +21,12 @@ const AddProduct = () => {
     specifications: [],
     variants: [],
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const apiUrl = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/categories", { withCredentials: "true" })
+      .get(apiUrl + "/api/categories", { withCredentials: "true" })
       .then((response) => setCategories(response.data))
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
@@ -103,6 +105,7 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     // console.log("Form Data Submitted:", formData);
 
     const formDataToSend = new FormData();
@@ -130,7 +133,7 @@ const AddProduct = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/products/add",
+        apiUrl + "/api/products/add",
         formDataToSend, 
         {
           withCredentials: "true",
@@ -138,18 +141,24 @@ const AddProduct = () => {
         }
       );
 
+      console.log(response.data)
+
       setFormData({
         name: "",
         description: "",
         category: "",
-        mainCategory: "",
         subCategory: "",
         brand: "",
+        images: Array(MAX_IMAGES).fill(null),
+        preview: Array(MAX_IMAGES).fill(null),
+        specifications: [],
         variants: [],
       });
     } catch (error) {
       console.error("Error adding product:", error);
       alert(error.response?.data?.message || "Failed to add product");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -334,10 +343,12 @@ const AddProduct = () => {
         </button>
 
         <button
-          type="submit"
-          className="bg-purple-500 text-white p-2 mt-4 block w-full"
+          type="submit" disabled={isSubmitting}
+          className={`p-2 mt-4 block w-full text-white transition-colors duration-300 rounded
+          ${isSubmitting ? "bg-purple-300 cursor-not-allowed" : "bg-purple-500 hover:bg-purple-600"}
+        `}
         >
-          Submit
+           {isSubmitting ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>
