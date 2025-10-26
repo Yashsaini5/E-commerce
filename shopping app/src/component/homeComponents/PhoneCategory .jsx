@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import iphone from "../../assets/images/iphone.jpeg"; 
 import samsung from "../../assets/images/samsung.jpeg";
 import oneplus from "../../assets/images/oneplus.jpeg";
-import iqoo from "../../assets/images/iqoo.jpeg";
+import iqoo from "../../assets/images/IQOO.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
 
