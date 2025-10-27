@@ -96,59 +96,6 @@ const placeOrderStripe = async (req, res) => {
     }
   };
   
-//verify stripe payment   
-// const verifyStripe = async (req, res) => {
-//     const { success, session_id } = req.body;
-  
-//     try {
-//       if (success === "true") {
-//         const session = await stripe.checkout.sessions.retrieve(session_id);
-  
-//         if (!session || session.payment_status !== "paid") {
-//           return res.status(400).json({ success: false, message: "Payment not completed" });
-//         }
-  
-//         const userId = session.metadata.userID;
-//         const shippingAddress = JSON.parse(session.metadata.shippingAddress);
-//         const products = JSON.parse(session.metadata.products);
-//         const totalAmount = Number(session.metadata.totalAmount);
-  
-//         const orderProducts = products.map(item => ({
-//           product: item.productId,
-//           quantity: item.quantity,
-//           size: item.size,
-//           price: item.price,
-//           name: item.name,
-//           image: item.image,
-//         }));
-  
-//         const newOrder = new Order({
-//           user: userId,
-//           products: orderProducts,
-//           shippingAddress,
-//           paymentDetails: {
-//             method: "Stripe",
-//             status: "paid",
-//             transactionId: session.payment_intent,
-//           },
-//           totalAmount,
-//           status: "Order Placed",
-//         });
-  
-//         await newOrder.save();
-//         await User.findByIdAndUpdate(userId, { cart: [] });
-  
-//         return res.json({ success: true });
-//       } else {
-//         return res.json({ success: false });
-//       }
-//     } catch (err) {
-//       console.error("Error verifying stripe payment", err);
-//       res.status(500).json({ message: "Payment verification failed" });
-//     }
-//   };
-  
-
 //placing order using Razorpay method
 const placeOrderRazorpay = async (req, res) => {
 

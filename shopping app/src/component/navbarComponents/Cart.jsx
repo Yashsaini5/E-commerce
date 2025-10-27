@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { DataContext } from "../../context/DataProvider";
-import { useNavigate, useLocation  } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Cart = () => {
   const { cart, user, fetchCart, updatedCartQuantity, removeFromCart } =
@@ -23,30 +23,37 @@ const Cart = () => {
     0
   );
 
-   useEffect(() => {
+  useEffect(() => {
     if (!user) {
-       localStorage.setItem("redirectAfterLogin", location.pathname);
+      localStorage.setItem("redirectAfterLogin", location.pathname);
       navigate("/login", { replace: true });
     } else {
-       fetchCart(user);
+      fetchCart(user);
     }
   }, [user, navigate, location]);
 
   return (
     <>
       {user && (
-        <div>
+        <div className="flex flex-col min-h-screen bg-stone-100">
           <div className="h-16"></div>
-          <div className="flex flex-col lg:flex-row w-full gap-8">
+          <div className=" lg:flex-row flex-grow flex flex-col items-center justify-center w-full px-4 py-10">
             {/* Cart Items */}
             <div className="cartItem px-6 py-10 w-full max-w-4xl mx-auto">
               <p className="text-3xl font-bold mb-8 text-center border-b-4 border-gray-400 pb-2">
                 Your Cart
               </p>
               {cart.length === 0 ? (
-                <p className="text-lg text-gray-600 text-center">
-                  Your cart is empty.
-                </p>
+                <div className="flex flex-col items-center justify-center py-20 text-gray-600">
+                  <i className="ri-shopping-cart-2-line text-6xl text-gray-400 mb-4"></i>
+                  <p className="text-lg mb-6">Your cart is empty</p>
+                  <button
+                    onClick={() => navigate("/")}
+                    className="px-6 py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition-all duration-300 shadow-md"
+                  >
+                    Continue Shopping
+                  </button>
+                </div>
               ) : (
                 cart.map((item) => (
                   <div

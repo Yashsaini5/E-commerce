@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const authMiddleware = (req, res, next) => {
-    console.log("Cookies received:", req.cookies.token);
+    // console.log("Cookies received:", req.cookies.token);
     // console.log(req.cookies.token)
     if (!req.cookies || !req.cookies.token) {
         return res.status(401).json({ message: "No token found, authorization denied" });

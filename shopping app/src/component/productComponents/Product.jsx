@@ -1,4 +1,4 @@
-import React, { useState,useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { DataContext } from "../../context/DataProvider";
 import { useLocation, useParams } from "react-router-dom";
 import RelatedProduct from "../productComponents/RelatedProduct";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 //   const { id } = useParams();
 //   const { data, addToCart, addToWishlist, removeFromWishlist, wishlist, fetchWishlist} = useContext(DataContext);
 //   const navigate = useNavigate()
- 
+
 //   if (!data) {
 //     return <div>Loading...</div>; // Fallback UI
 //   }
@@ -40,9 +40,8 @@ import { useNavigate } from "react-router-dom";
 //       }
 //     }, [wishlist, product]);
 //     // console.log(isLiked);
-    
 
-//     let offer = Math.floor ((product.variants[0].oldPrice-product.variants[0].newPrice)/product.variants[0].oldPrice*100) 
+//     let offer = Math.floor ((product.variants[0].oldPrice-product.variants[0].newPrice)/product.variants[0].oldPrice*100)
 //     const handleWishlist = async () => {
 //       if (isLiked) {
 //        await removeFromWishlist(product._id);
@@ -88,9 +87,7 @@ const Product = () => {
   useEffect(() => {
     const product = data?.find((item) => item._id === id);
     if (Array.isArray(wishlist) && product) {
-      setIsLiked(
-        wishlist.some((item) => item.product?._id === product._id)
-      );
+      setIsLiked(wishlist.some((item) => item.product?._id === product._id));
     }
   }, [wishlist, data, id]);
 
@@ -118,138 +115,179 @@ const Product = () => {
   };
 
   const handleAddToCart = async () => {
-    if(user){
-    await addToCart(product?._id,1,selectedVariant?.size,selectedVariant?.newPrice,selectedVariant?.oldPrice)
-    navigate("/cart");
+    if (user) {
+      await addToCart(
+        product?._id,
+        1,
+        selectedVariant?.size,
+        selectedVariant?.newPrice,
+        selectedVariant?.oldPrice
+      );
+      navigate("/cart");
     } else {
       localStorage.setItem("redirectAfterLogin", location.pathname);
       navigate("/login", { replace: true });
     }
-  } 
-    
+  };
+
   return (
     <div>
       <div className="h-16"></div>
-      <div className="min-h-screen w-full bg-stone-300 flex justify-center">
-        <div className="w-[92vw] h-fit mt-10 flex flex-wrap">
-          <div className="flex w-[40vw] h-[85%] sticky top-28 pb-10">
-            <div className="h-[80vh] w-[20%] bg-white flex flex-col justify-between">
-              <div key={product.images[0]} className="h-[15vh] w-[95%] bg-slate-950" onClick={()=>setMainImg(product.images[0])} >
-                <img
-                  src={product.images[0]}
-                  alt=""
-                  className="h-[15vh] w-full bg-cover overflow-hidden"
-                />
-              </div>
-              <div key={product.images[1]} className="h-[15vh] w-[95%] bg-slate-950" onClick={()=>setMainImg(product.images[1])}>
-                <img
-                  src={product.images[1]}
-                  alt=""
-                  className="h-[15vh] w-full bg-cover overflow-hidden"
-                />
-              </div>
-              <div key={product.images[2]} className="h-[15vh] w-[95%] bg-slate-950" onClick={()=>setMainImg(product.images[2])}>
-                <img
-                  src={product.images[2]}
-                  alt=""
-                  className="h-[15vh] w-full bg-cover overflow-hidden"
-                />
-              </div>
-              <div key={product.images[3]} className="h-[15vh] w-[95%] bg-slate-950" onClick={()=>setMainImg(product.images[3])}>
-                <img
-                  src={product.images[3]}
-                  alt=""
-                  className="h-[15vh] w-full bg-cover overflow-hidden"
-                />
-              </div>
-              <div key={product.images[4]} className="h-[15vh] w-[95%] bg-slate-950" onClick={()=>setMainImg(product.images[4])}>
-                <img
-                  src={product.images[4]}
-                  alt=""
-                  className="h-[15vh] w-full bg-cover overflow-hidden"
-                />
-              </div>
+      <div className="min-h-screen w-full bg-gradient-to-b from-gray-100 to-stone-200 flex justify-center">
+        <div className="w-[92vw] h-fit mt-10 flex flex-wrap gap-8">
+          {/* Left Image Section */}
+          <div className="flex w-[40vw] h-fit sticky top-24 pb-10">
+            {/* Thumbnails */}
+            <div className="h-[80vh] w-[18%] bg-white rounded-xl shadow-md flex flex-col items-center justify-start gap-3 p-2 overflow-y-auto">
+              {product.images.slice(0, 5).map((img, i) => (
+                <div
+                  key={img}
+                  className={`h-[14vh] w-[95%] rounded-lg overflow-hidden border-2 cursor-pointer transition-all duration-300 hover:scale-[1.05] hover:border-orange-400 ${
+                    mainImg === img ? "border-orange-500" : "border-gray-200"
+                  }`}
+                  onClick={() => setMainImg(img)}
+                >
+                  <img
+                    src={img}
+                    alt={`thumbnail-${i}`}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ))}
             </div>
-            <div className="h-full w-[100%] bg-red-800 relative">
-            <div className="bg-gray-300 text-4xl text-gray-500 absolute top-3 right-3 w-14 h-14 pt-1 flex items-center justify-center rounded-full"><i className={`ri-heart-fill ${isLiked ? "text-red-800" : ""} cursor-pointer `}  onClick={handleWishlist}></i></div>
+
+            {/* Main Image */}
+            <div className="relative h-[80vh] w-[80%] ml-4 rounded-xl shadow-xl overflow-hidden bg-white">
+              <div className="absolute top-3 right-3">
+                <div
+                  className={`text-4xl w-14 h-14 flex items-center justify-center rounded-full shadow-md bg-white hover:scale-110 transition-transform duration-200 cursor-pointer ${
+                    isLiked ? "text-red-500" : "text-gray-400"
+                  }`}
+                  onClick={handleWishlist}
+                >
+                  <i className="ri-heart-fill"></i>
+                </div>
+              </div>
               <img
                 src={mainImg}
-                alt=""
-                className="h-[80vh] w-full bg-cover overflow-hidden"
+                alt="product-main"
+                className="h-full w-full object-contain"
               />
             </div>
           </div>
 
-          <div className=" w-[45vw] min-h-screen px-10 mt-2 flex flex-col">
-            <div className="text-gray-500 text-xs font-normal mb-2">
-              path of arrival ?
+          {/* Product Info Section */}
+          <div className="w-[45vw] min-h-screen px-8 py-4 bg-white rounded-2xl shadow-lg">
+            <div className="text-gray-400 text-sm mb-2">
+              Home / Category / {product.name}
             </div>
-            <div className="text-gray-800 text-base font-bold">
+            <h2 className="text-gray-800 text-2xl font-bold">
               {product.brand}
-            </div>
-            <div className="text-2xl font-semibold whitespace-normal h-fit mb-3">
-              {product.name}
-            </div>
-            <hr className="h-[2px] bg-gray-600" />
-            <div className="text-lg text-green-600 font-semibold mt-3">
-              Special price
-            </div>
-            <div className="flex gap-3 items-end mt-1 ml-2">
-              <p className="text-3xl font-semibold">₹ {selectedVariant?.newPrice}</p>
-              <p className="text-lg text-gray-500 line-through">
-              ₹{selectedVariant?.oldPrice}
-              </p>
-              <p className="text-lg text-green-600 font-semibold">{offer}% off</p>
-            </div>
-            <div className="mt-4">
-              <p className="text-lg">Select Size : </p>
-              <div className="flex gap-3 mt-2">
-              {product.variants.map((variant) => (
-                <div key={variant?.size} className={`h-10 px-3 bg-gray-300 flex justify-center items-center cursor-pointer ${selectedVariant?.size == variant?.size ? "bg-red-300" : ""}`} onClick={() => setSelectedVariant(variant)
-                }>
-                  {variant?.size}
-                </div>
-              ))}
-              </div>
-            </div>
-            <div className="flex gap-5">
-            <div className="mt-6 border-2 bg-orange-300 w-fit py-2 px-20 cursor-pointer" onClick={() => handleAddToCart(product?._id,1,selectedVariant?.size,selectedVariant?.newPrice,selectedVariant?.oldPrice)}>Add to cart</div>
-            {/* <div className="mt-6 border-2 bg-orange-300 w-fit py-2 px-10 cursor-pointer" onClick={async ()=> {await addToCart(product._id,1,selectedVariant.size,selectedVariant.newPrice,selectedVariant.oldPrice) 
-               navigate("/cart");
-            }}>Buy Now</div> */}
-            </div>
-            <div className="mt-4 flex  flex-col gap-1">
-              <p>100% Original product</p>
-              <p>Cash on delivery is available on this product</p>
-              <p>Easy return and exchange policy within 7 days</p>
-            </div>
-            <div>
-              <p className="text-lg font-medium mt-4">Product Description : </p>
-              <p className="mt-1 text-sm w-full whitespace-normal">{product.description}</p>
-            </div>
-            <div className="h-fit mt-2 pb-10">
-              <p className="text-2xl font-medium mt-4">Product Specifications : </p>
-              {product.specifications.map((specification, index) => (
-                <div key={index} className="flex whitespace-normal gap-5">
-                  <div className="flex flex-col">
-              <p className="mt-2 text-base font-medium w-56 whitespace-normal">{specification.key} :</p>
-              </div>
-              <div className="flex flex-col">
-              <p className="mt-2 text-base w-fit whitespace-normal">{specification.value}</p>
-              </div>
-              </div>
-              ))}
+            </h2>
+            <p className="text-3xl font-semibold mt-2">{product.name}</p>
 
+            <hr className="my-4 border-gray-300" />
+
+            <p className="text-lg text-green-700 font-semibold mt-2">
+              Special Price
+            </p>
+            <div className="flex gap-3 items-end mt-2 ml-1">
+              <p className="text-3xl font-semibold text-gray-900">
+                ₹{selectedVariant?.newPrice}
+              </p>
+              <p className="text-lg text-gray-400 line-through">
+                ₹{selectedVariant?.oldPrice}
+              </p>
+              <p className="text-lg text-green-600 font-semibold">
+                {offer}% off
+              </p>
             </div>
-           
+
+            {/* Size Selector */}
+            <div className="mt-6">
+              <p className="text-lg font-medium text-gray-700 mb-2">
+                Select Size:
+              </p>
+              <div className="flex gap-3 flex-wrap">
+                {product.variants.map((variant) => (
+                  <div
+                    key={variant.size}
+                    className={`px-5 py-2 border rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 ${
+                      selectedVariant?.size === variant.size
+                        ? "bg-orange-500 text-white border-orange-600 scale-105"
+                        : "bg-gray-100 hover:bg-orange-100 border-gray-300 text-gray-700"
+                    }`}
+                    onClick={() => setSelectedVariant(variant)}
+                  >
+                    {variant.size}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-5 mt-8">
+              <div
+                className="border-2 border-orange-500 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-20 rounded-lg cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg"
+                onClick={() =>
+                  handleAddToCart(
+                    product?._id,
+                    1,
+                    selectedVariant?.size,
+                    selectedVariant?.newPrice,
+                    selectedVariant?.oldPrice
+                  )
+                }
+              >
+                Add to Cart
+              </div>
+            </div>
+
+            {/* Product Info */}
+            <div className="mt-6 text-sm text-gray-600 leading-relaxed space-y-1">
+              <p>✅ 100% Original product</p>
+              <p>🚚 Cash on delivery available</p>
+              <p>↩️ Easy 7-day return and exchange policy</p>
+            </div>
+
+            {/* Description */}
+            <div className="mt-8">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Product Description
+              </h3>
+              <p className="text-gray-600 text-base leading-relaxed">
+                {product.description}
+              </p>
+            </div>
+
+            {/* Specifications */}
+            <div className="mt-8">
+              <h3 className="text-2xl font-semibold text-gray-800 mb-3">
+                Product Specifications
+              </h3>
+              <div className="flex flex-col gap-2">
+                {product.specifications.map((spec, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between border-b border-gray-200 py-2 text-gray-700"
+                  >
+                    <span className="font-medium w-1/3">{spec.key}:</span>
+                    <span className="w-2/3">{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          
         </div>
       </div>
-      <div className="h-min-h-screen w-full bg-stone-400">
-        <div className=" mx-8">
-          {/* {console.log(product.subCategory)} */}
-          <RelatedProduct category={product.category?.name} subCategory={product.subCategory}/>
+
+      {/* Related Products */}
+      <div className="w-full bg-gradient-to-b from-stone-200 to-stone-300 py-10">
+        <div className="mx-8">
+          <RelatedProduct
+            category={product.category?.name}
+            subCategory={product.subCategory}
+          />
         </div>
       </div>
     </div>
