@@ -117,7 +117,7 @@ const userAuthentication = async (req, res) => {
   }
 };
 
-const logout = async () => {
+const logout = async (req, res) => {
    res.clearCookie("token", {
     httpOnly: true,
     secure: true,
