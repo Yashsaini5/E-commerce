@@ -34,7 +34,7 @@ const createUser = async (req, res) => {
   var token = jwt.sign({ id: createdUser._id }, process.env.JWT_SECRET);
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "none", 
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
@@ -65,7 +65,7 @@ const loginUser = async (req, res) => {
   var token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET);
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "none", 
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
@@ -95,7 +95,7 @@ const firebaseLogin = async (req, res) => {
     var jwttoken = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     res.cookie("token", jwttoken), {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 7,
   };
