@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const {authMiddleware} = require("../middleware/authMiddleware")
-const {createUser, loginUser, firebaseLogin, userAuthentication, addAddress, deleteAddressByIndex} = require("../controllers/userController")
+const {createUser, loginUser, firebaseLogin, userAuthentication, addAddress, deleteAddressByIndex, logout} = require("../controllers/userController")
 
 //create user
 router.post("/createUser", createUser);
@@ -12,6 +12,8 @@ router.post("/firebase-login",firebaseLogin)
 
 //verifing identity
 router.get("/me",authMiddleware, userAuthentication)
+
+router.post("/logout", logout)
 
 //adding address to user schema
 router.put("/add-address", authMiddleware, addAddress);

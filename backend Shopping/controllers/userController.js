@@ -117,6 +117,15 @@ const userAuthentication = async (req, res) => {
   }
 };
 
+const logout = async () => {
+   res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+}
+
 const addAddress = async (req, res) => {
   try {
     const userId = req.user;
@@ -163,6 +172,7 @@ module.exports = {
   loginUser,
   firebaseLogin,
   userAuthentication,
+  logout,
   addAddress,
   deleteAddressByIndex,
 };
