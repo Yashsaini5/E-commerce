@@ -10,7 +10,7 @@ const ItemList = () => {
   const fetchProducts = () => {
     setLoading(true);
     axios
-      .get(apiUrl + "/api/products")
+      .get(apiUrl + "/api/products",{withCredentials: true})
       .then((res) => {
         if (Array.isArray(res.data)) {
           setProducts(res.data);

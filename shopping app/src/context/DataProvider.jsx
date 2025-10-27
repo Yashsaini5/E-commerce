@@ -53,7 +53,7 @@ useEffect(() => {
    const fetchCart = async () => {
       try{
         const response = await axios.get(`${url}/cart`,{
-          withCredentials: "true",
+          withCredentials: true,
         })
         // if (!user || user == null ) return navigate("/login");
         if (!response.data || !Array.isArray(response.data)) {
@@ -98,7 +98,7 @@ useEffect(() => {
     try{
       const response = await axios.patch(`${url}/cart/update`,
         {productId,quantity:newQuantity, size},
-        {withCredentials:"true"}
+        {withCredentials:true}
       )
       setCart(response.data)
     }catch(error){
@@ -109,7 +109,7 @@ useEffect(() => {
   const removeFromCart = async (productId, size) => {
     try{
       const response = await axios.delete(`${url}/cart/remove?productId=${productId}&size=${size}`,
-        {withCredentials:"true"}
+        {withCredentials:true}
       )
       setCart(response.data)
     }catch(error){
@@ -148,7 +148,7 @@ useEffect(() => {
  const fetchWishlist = async () => {
     try{
       const response = await axios.get(`${url}/wishlist`,{
-        withCredentials:"true",
+        withCredentials:true,
       })
       // if (!user || user == null ) return navigate("/login");
       if (!response.data || !Array.isArray(response.data)) {
@@ -164,7 +164,7 @@ useEffect(() => {
   const removeFromWishlist = async (productId) => {
     try{
       const response = await axios.delete(`${url}/wishlist/remove?productId=${productId}`,
-        {withCredentials:"true"})
+        {withCredentials:true})
         setWishlist(response.data)
     }catch(error){
       console.log("error deleting wishlist: ",error);
@@ -175,7 +175,7 @@ useEffect(() => {
   const addToWishlist = async (productId) => {
     try{
       const response = await axios.post(`${url}/wishlist`,
-        {productId},{withCredentials:"true"})
+        {productId},{withCredentials:true})
 
         setWishlist(response.data)
     }catch(error){

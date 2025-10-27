@@ -26,7 +26,7 @@ const AddProduct = () => {
     const apiUrl = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     axios
-      .get(apiUrl + "/api/categories", { withCredentials: "true" })
+      .get(apiUrl + "/api/categories", { withCredentials: true })
       .then((response) => setCategories(response.data))
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
@@ -136,7 +136,7 @@ const AddProduct = () => {
         apiUrl + "/api/products/add",
         formDataToSend, 
         {
-          withCredentials: "true",
+          withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
         }
       );

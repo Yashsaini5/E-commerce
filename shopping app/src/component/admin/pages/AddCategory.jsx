@@ -12,7 +12,7 @@ const AddCategory = () => {
   // Fetchs categories on component mount
   useEffect(() => {
     axios
-      .get(apiUrl+ "/api/categories", { withCredentials: "true" })
+      .get(apiUrl+ "/api/categories", { withCredentials: true })
       .then((response) => setCategories(response.data))
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
@@ -52,7 +52,7 @@ const AddCategory = () => {
           subcategories: subcategories.filter((sub) => sub.trim() !== ""), // Remove empty subcategories
           sizes: sizes.filter((size) => size.trim() !== ""), // Remove empty sizes
         },
-        { withCredentials: "true" }
+        { withCredentials: true }
       );
       alert(response.data.message);
       setName("");
