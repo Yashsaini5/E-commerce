@@ -94,6 +94,7 @@ const Navbar = ({}) => {
 
   // 4️⃣ Clear user state and navigate
   setUser(null);
+  setCartItemCount(0);
   navigate("/");
 };
 
