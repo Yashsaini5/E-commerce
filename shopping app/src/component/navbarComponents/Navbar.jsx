@@ -71,18 +71,31 @@ const Navbar = ({}) => {
       .to(gsapicon4Opacity.current, { x: -45, duration: 0.2 });
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-       console.warn("Firebase sign-out skipped or failed:", error.message);
-    }
+ const handleLogout = async () => {
+  try {
+    // 1️⃣ Firebase logout (if using Firebase Auth)
+    await signOut(auth);
+  } catch (error) {
+    console.warn("Firebase sign-out skipped or failed:", error.message);
+  }
 
-    document.cookie = "token=; path=/; max-age=0";
-    setUser(null);
-    setCartItemCount(0)
-    navigate("/");
-  };
+  try {
+    // 2️⃣ Clear JWT token (from cookies)
+    document.cookie = "token=; path=/; max-age=0; secure; samesite=strict";
+
+    // 3️⃣ Optional: Tell backend to invalidate token (if you store sessions)
+    await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/logout`, {
+      method: "POST",
+      credentials: "include", // ensures cookies are sent
+    });
+  } catch (err) {
+    console.warn("Server logout failed:", err.message);
+  }
+
+  // 4️⃣ Clear user state and navigate
+  setUser(null);
+  navigate("/");
+};
 
   return (
     <header className="text-white fixed z-50">
