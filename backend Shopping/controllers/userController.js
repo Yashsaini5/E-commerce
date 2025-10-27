@@ -93,12 +93,12 @@ const firebaseLogin = async (req, res) => {
     }
 
     var jwttoken = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.cookie("token", jwttoken), {
+    res.cookie("token", jwttoken, {
     httpOnly: true,
     secure: true,
     sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 7,
-  };
+  });
     res.status(200).json(user);
   } catch (error) {
     console.error("Firebase login error:", error);
