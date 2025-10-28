@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-router.post("/webhook", express.raw({type: "application/json" }), async (req, res) => {
+router.post("/webhook",  async (req, res) => {
     const sig = req.headers["stripe-signature"];
 
     let event;
@@ -59,7 +59,7 @@ router.post("/webhook", express.raw({type: "application/json" }), async (req, re
   }
 
   // Respond back to Stripe (must return 2xx)
-  res.send();
+  res.status(200).send();
 
 });
 

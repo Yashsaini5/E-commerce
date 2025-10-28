@@ -4,6 +4,8 @@ const cookieParser = require("cookie-parser");
 const webhook = require("../routes/webhook")
 
 const setupMiddleware = (app) => {
+ app.use('/api/order/webhook', express.raw({ type: 'application/json' }));
+ app.use('/api/order', webhook);
   app.use(express.json());
   app.use(
     cors({
@@ -12,7 +14,6 @@ const setupMiddleware = (app) => {
     })
   );
   app.use(cookieParser());
-  app.use("/api/order", webhook);
 };
 
 module.exports = setupMiddleware;
